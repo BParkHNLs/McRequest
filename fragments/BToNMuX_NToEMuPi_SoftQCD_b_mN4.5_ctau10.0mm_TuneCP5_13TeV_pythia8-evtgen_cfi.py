@@ -1,17 +1,16 @@
 
 import FWCore.ParameterSet.Config as cms
-from Configuration.StandardSequences.Eras import eras
 from Configuration.Generator.Pythia8CommonSettings_cfi import *
 from Configuration.Generator.MCTunes2017.PythiaCP5Settings_cfi import *
 
 # Production Info
-process.configurationMetadata = cms.untracked.PSet(
+configurationMetadata = cms.untracked.PSet(
     annotation = cms.untracked.string('B -> mu N X, with long-lived N, m=4.5GeV, ctau=10.0mm'),
     name = cms.untracked.string('B -> mu N X, with long-lived N, m=4.5GeV, ctau=10.0mm'),
     version = cms.untracked.string('$1.0$')
 )
 
-process.BFilter = cms.EDFilter("MCMultiParticleFilter",
+BFilter = cms.EDFilter("MCMultiParticleFilter",
    NumRequired = cms.int32(1),
    AcceptMore = cms.bool(True),
    ParticleID = cms.vint32(521,511,531),
@@ -20,7 +19,7 @@ process.BFilter = cms.EDFilter("MCMultiParticleFilter",
    Status = cms.vint32(0,0,0), 
 )
 
-process.BToNMuXFilter = cms.EDFilter("PythiaFilterMotherSister", 
+BToNMuXFilter = cms.EDFilter("PythiaFilterMotherSister", 
     MaxEta = cms.untracked.double(1.55),
     MinEta = cms.untracked.double(-1.55),
     MinPt = cms.untracked.double(6.8), 
@@ -32,7 +31,7 @@ process.BToNMuXFilter = cms.EDFilter("PythiaFilterMotherSister",
     MinNephewPts = cms.untracked.vdouble(0.4,0.4,0.5), 
 )
 
-process.generator = cms.EDFilter("Pythia8GeneratorFilter",
+generator = cms.EDFilter("Pythia8GeneratorFilter",
     ExternalDecays = cms.PSet(
         EvtGen130 = cms.untracked.PSet(
             convertPythiaCodes = cms.untracked.bool(False),
@@ -51,7 +50,7 @@ process.generator = cms.EDFilter("Pythia8GeneratorFilter",
             particle_property_file = cms.FileInPath('McRequest/evtGenData/evt_2014_mass4.5_ctau10.0_maj.pdl'),
             user_decay_file = cms.vstring('McRequest/evtGenData/HNLdecay_mass4.5_maj_emu.DEC'),
         ),
-        parameterSets = cms.vstring('EvtGen130')
+        parameterSets = cms.vstring('EvtGen130'),
     ),
 
     PythiaParameters = cms.PSet(
@@ -65,17 +64,15 @@ process.generator = cms.EDFilter("Pythia8GeneratorFilter",
         parameterSets = cms.vstring('pythia8CommonSettings',
                                     'pythia8CP5Settings',
                                     'processParameters',
-                                    )
-    ) 
+                                    ),
+    ), 
 
     comEnergy = cms.double(13000.0),
     filterEfficiency = cms.untracked.double(-1),      # this will not be used by Pythia, only saved in GenInfo 
-    crossSection = cms.double(1.0)
     maxEventsToPrint = cms.untracked.int32(0),        
     pythiaHepMCVerbosity = cms.untracked.bool(False), 
-    pythiaPylistVerbosity = cms.untracked.int32(0)    
+    pythiaPylistVerbosity = cms.untracked.int32(0),
 )
 
-
-process.ProductionFilterSequence = cms.Sequence(process.generator+process.BFilter+process.BToNMuXFilter)
+ProductionFilterSequence = cms.Sequence(generator+BFilter+BToNMuXFilter)
 
