@@ -43,7 +43,7 @@ generator = cms.EDFilter("Pythia8HadronizerFilter",
             ),
             
             operates_on_particles = cms.vint32(541, -541), 
-            particle_property_file = cms.FileInPath('McRequest/evtGenData/evt_2014_mass3.0_ctau100.0_maj.pdl'),
+            particle_property_file = cms.FileInPath('McRequest/evtGenData/evt_BHNL_mass3.0_ctau100.0_maj.pdl'),
             user_decay_file = cms.vstring('McRequest/evtGenData/HNLdecay_mass3.0_maj_emu_Bc.DEC'),
         ),
         parameterSets = cms.vstring('EvtGen130'),

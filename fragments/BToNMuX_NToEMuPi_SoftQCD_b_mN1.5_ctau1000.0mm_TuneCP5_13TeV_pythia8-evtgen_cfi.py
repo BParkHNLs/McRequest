@@ -47,7 +47,7 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
             ),
             
             operates_on_particles = cms.vint32(521, -521, 511, -511, 531, -531), 
-            particle_property_file = cms.FileInPath('McRequest/evtGenData/evt_2014_mass1.5_ctau1000.0_maj.pdl'),
+            particle_property_file = cms.FileInPath('McRequest/evtGenData/evt_BHNL_mass1.5_ctau1000.0_maj.pdl'),
             user_decay_file = cms.vstring('McRequest/evtGenData/HNLdecay_mass1.5_maj_emu.DEC'),
         ),
         parameterSets = cms.vstring('EvtGen130'),
