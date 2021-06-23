@@ -26,7 +26,7 @@ cmsDriver.py Configuration/GenProduction/python/fragment_BuBdBs.py --fileout fil
 Test a single Bc sample
 ```
 mkdir -p Configuration/GenProduction/python/.
-cp McRequest/fragments/BToNMuX_NToEMuPi_SoftQCD_b_mN3.0_ctau100.0mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py Configuration/GenProduction/python/fragment_Bc.py
+cp McRequest/fragments/BcToNMuX_NToEMuPi_SoftQCD_b_mN3.0_ctau100.0mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py Configuration/GenProduction/python/fragment_Bc.py
 
 scram b -j 8
 
