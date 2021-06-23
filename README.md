@@ -1,14 +1,12 @@
 # Instructions to test B->HNL generation
 
 
-Release with *all* modifications is not yet available, therefore use this setup for the moment
+Release with *all* modifications is now available (validation test was performed)
 ```
-cmsrel CMSSW_10_2_15
-cd CMSSW_10_2_15/src
+cmsrel CMSSW_10_2_27
+cd CMSSW_10_2_27/src
 cmsenv
 git cms-init
-
-git cms-merge-topic mgratti:BHNL
 
 git clone https://github.com/mgratti/McRequest.git 
 ```
@@ -26,7 +24,7 @@ cmsDriver.py Configuration/GenProduction/python/fragment_BuBdBs.py --fileout fil
 Test a single Bc sample
 ```
 mkdir -p Configuration/GenProduction/python/.
-cp McRequest/fragments/BToNMuX_NToEMuPi_SoftQCD_b_mN3.0_ctau100.0mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py Configuration/GenProduction/python/fragment_Bc.py
+cp McRequest/fragments/BcToNMuX_NToEMuPi_SoftQCD_b_mN3.0_ctau100.0mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py Configuration/GenProduction/python/fragment_Bc.py
 
 scram b -j 8
 
