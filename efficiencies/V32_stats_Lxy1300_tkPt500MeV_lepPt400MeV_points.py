@@ -1,4 +1,4 @@
-from python.common  import Point,Config,getCtauEff
+# from python.common  import Point,Config,getCtauEff
 
 # List of points to be generated
 #   - N.B.: mass must be a float
@@ -29,12 +29,12 @@ m_ctau_eff_time_s = [
 
 ]
 
-points = []
-for m,ctau,eff,time in m_ctau_eff_time_s:
-  p   = Point(mass=m,ctau=ctau,vv=None,ismaj=True)
-  cfg = Config(nevtseff=5000,muoneff=eff,displeff=1.0,timeevt=time,timejob=12,contingency=3.)
-  p.setConfig(cfg)
-  points.append(p)
+#points = []
+#for m,ctau,eff,time in m_ctau_eff_time_s:
+#  p   = Point(mass=m,ctau=ctau,vv=None,ismaj=True)
+#  cfg = Config(nevtseff=5000,muoneff=eff,displeff=1.0,timeevt=time,timejob=12,contingency=3.)
+#  p.setConfig(cfg)
+#  points.append(p)
 
   # 
 
