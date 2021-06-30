@@ -9,6 +9,8 @@ cmsenv
 git cms-init
 
 git clone https://github.com/mgratti/McRequest.git 
+cd McRequest
+export PYTHONPATH=$PYTHONPATH:$PWD
 ```
 
 Test a single Bu/Bd/Bs sample
@@ -18,7 +20,7 @@ cp McRequest/fragments/BToNMuX_NToEMuPi_SoftQCD_b_mN3.0_ctau100.0mm_TuneCP5_13Te
 
 scram b -j 8
 
-cmsDriver.py Configuration/GenProduction/python/fragment_BuBdBs.py --fileout file:BToNMuX_NToEMuPi_test.root --mc --eventcontent FEVTDEBUG --datatier GEN-SIM --conditions 102X_upgrade2018_realistic_v11 --beamspot Realistic25ns13TeVEarly2018Collision --step GEN,SIM --geometry DB:Extended --era Run2_2018 --python_filename test_BuBdBs.py --no_exec --customise Configuration/DataProcessing/Utils.addMonitoring -n 100
+cmsDriver.py Configuration/GenProduction/python/fragment_BuBdBs.py --fileout file:BToNMuX_NToEMuPi_test.root --mc --eventcontent FEVTDEBUG --datatier GEN-SIM --conditions 102X_upgrade2018_realistic_v11 --beamspot Realistic25ns13TeVEarly2018Collision --step GEN,SIM --geometry DB:Extended --era Run2_2018 --python_filename test_BuBdBs.py --no_exec --customise Configuration/DataProcessing/Utils.addMonitoring -n 100 --mc
 ```
 
 Test a single Bc sample
@@ -28,7 +30,7 @@ cp McRequest/fragments/BcToNMuX_NToEMuPi_SoftQCD_b_mN3.0_ctau100.0mm_TuneCP5_13T
 
 scram b -j 8
 
-cmsDriver.py Configuration/GenProduction/python/fragment_Bc.py --fileout file:BcToNMuX_NToEMuPi_test.root --mc --eventcontent FEVTDEBUG --datatier GEN-SIM --conditions 102X_upgrade2018_realistic_v11 --beamspot Realistic25ns13TeVEarly2018Collision --step GEN,SIM --geometry DB:Extended --era Run2_2018 --python_filename test_Bc.py --no_exec --customise Configuration/DataProcessing/Utils.addMonitoring -n 100 --filein  root://eosuser.cern.ch//eos/user/m/mratti/BHNL_Bc_LHEtoRoot_step0_nj90.root
+cmsDriver.py Configuration/GenProduction/python/fragment_Bc.py --fileout file:BcToNMuX_NToEMuPi_test.root --mc --eventcontent FEVTDEBUG --datatier GEN-SIM --conditions 102X_upgrade2018_realistic_v11 --beamspot Realistic25ns13TeVEarly2018Collision --step GEN,SIM --geometry DB:Extended --era Run2_2018 --python_filename test_Bc.py --no_exec --customise Configuration/DataProcessing/Utils.addMonitoring -n 100 --filein  root://eosuser.cern.ch//eos/user/m/mratti/BHNL_Bc_LHEtoRoot_step0_nj90.root --mc
 ```
 
 The filter efficiencies can be found in ```./efficiencies```. The format of the file can be read as: 
@@ -41,4 +43,7 @@ LHE files for Bc sample stored on eos
 ```
 /eos/cms/store/group/phys_bphys/fiorendi/13TeV/BcLHE/50MLHE_for201*/*
 ```
+
+
+
 
