@@ -1,0 +1,13 @@
+dataset,fragment,events,generator,time per event,filter efficiency
+BToNMuX_NToEMuPi_SoftQCD_b_mN2p0_ctau10000p0mm_TuneCP5_13TeV-pythia8-evtgen,genFragments/Generator/Pythia/BHNL/BToNMuX_NToEMuPi_SoftQCD_b_mN2.0_ctau10000.0mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py,100000,pythia8-evtgen,7.32e-02,4.68e-05
+BToNMuX_NToEMuPi_SoftQCD_b_mN1p5_ctau10000p0mm_TuneCP5_13TeV-pythia8-evtgen,genFragments/Generator/Pythia/BHNL/BToNMuX_NToEMuPi_SoftQCD_b_mN1.5_ctau10000.0mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py,100000,pythia8-evtgen,6.92e-02,1.02e-04
+BToNMuX_NToEMuPi_SoftQCD_b_mN1p0_ctau10000p0mm_TuneCP5_13TeV-pythia8-evtgen,genFragments/Generator/Pythia/BHNL/BToNMuX_NToEMuPi_SoftQCD_b_mN1.0_ctau10000.0mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py,100000,pythia8-evtgen,7.22e-02,1.69e-04
+BToNMuX_NToEMuPi_SoftQCD_b_mN4p5_ctau100p0mm_TuneCP5_13TeV-pythia8-evtgen,genFragments/Generator/Pythia/BHNL/BToNMuX_NToEMuPi_SoftQCD_b_mN4.5_ctau100.0mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py,100000,pythia8-evtgen,7.58e-02,3.66e-04
+BToNMuX_NToEMuPi_SoftQCD_b_mN2p0_ctau1000p0mm_TuneCP5_13TeV-pythia8-evtgen,genFragments/Generator/Pythia/BHNL/BToNMuX_NToEMuPi_SoftQCD_b_mN2.0_ctau1000.0mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py,100000,pythia8-evtgen,7.19e-02,3.67e-04
+BToNMuX_NToEMuPi_SoftQCD_b_mN4p5_ctau10p0mm_TuneCP5_13TeV-pythia8-evtgen,genFragments/Generator/Pythia/BHNL/BToNMuX_NToEMuPi_SoftQCD_b_mN4.5_ctau10.0mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py,100000,pythia8-evtgen,7.24e-02,4.39e-04
+
+
+
+
+
+
