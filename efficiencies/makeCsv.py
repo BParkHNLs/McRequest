@@ -1,14 +1,14 @@
-from V32_stats_Lxy1300_tkPt500MeV_lepPt400MeV_points import m_ctau_eff_time_s as points_B  
-from V32_stats_Lxy1300_tkPt500MeV_lepPt400MeV_Bc_points import m_ctau_eff_time_s as points_Bc
+from pilot_V33_stats_Lxy1300_tkPt500MeV_lepPt400MeV_points import m_ctau_eff_time_s as points_B  
+from pilot_V33_stats_Lxy1300_tkPt500MeV_lepPt400MeV_Bc_points import m_ctau_eff_time_s as points_Bc
 
 
-fout = open('request.csv', 'w')
+fout = open('request_newtune.csv', 'w')
 #fout.write('dataset,fragment,events,generator,time per event,filter efficiency,score\n')
-fout.write('dataset,fragment,events,generator,time per event,filter efficiency\n')
+fout.write('dataset,fragment,events,generator,time per event,filter efficiency,size per event\n')
 
-all_points = [(m,ctau,eff,time,'B') for m,ctau,eff,time in points_B] + [(m,ctau,eff,time,'Bc') for m,ctau,eff,time in points_Bc]
+all_points = [(m,ctau,eff,time,size,'B') for m,ctau,eff,time,size in points_B] + [(m,ctau,eff,time,size,'Bc') for m,ctau,eff,time,size in points_Bc]
 
-for m,ctau,eff,time,spc in all_points:
+for m,ctau,eff,time,size,spc in all_points:
 
   # name for fragment
   if ctau!=0.01:
@@ -27,10 +27,11 @@ for m,ctau,eff,time,spc in all_points:
   timeperevent = '{:.2e}'.format(time*eff)
   #timeperevent = '{:.2e}'.format(time)
   filterefficiency = '{:.2e}'.format(eff)
+  sizeperevent = '{:.2e}'.format(size)
 
-  fout.write('{dataset},{fragment},{events},{generator},{timeperevent},{filterefficiency}\n'.format(
+  fout.write('{dataset},{fragment},{events},{generator},{timeperevent},{filterefficiency},{sizeperevent}\n'.format(
                 dataset=ds, fragment=fragment, events=events, generator=generator,
-                timeperevent=timeperevent, filterefficiency=filterefficiency))
+                timeperevent=timeperevent, filterefficiency=filterefficiency, sizeperevent=sizeperevent))
   #fout.write('{dataset},{fragment},{events},{generator},{timeperevent},{filterefficiency},{score}\n'.format(
   #              dataset=ds, fragment=fragment, events=events, generator=generator,
   #              timeperevent=timeperevent, filterefficiency=filterefficiency, score=(8*3600/(time*eff))*eff))
