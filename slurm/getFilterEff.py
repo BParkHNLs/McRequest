@@ -46,6 +46,7 @@ if __name__ == "__main__":
   tot_timeTotEvent = {}
   tot_sizeGenEvents = {}
   tot_sizeGenEvent = {}
+  tot_scores = {}
 
   final_lines  = []
   final_lines_for_table = []
@@ -66,6 +67,9 @@ if __name__ == "__main__":
     if len(glob.glob(logs)) == 0: continue
     for log in glob.glob(logs):
       #print(log)
+      # patch
+      #nj = float(log.split('.log')[0].split('_')[-1])
+      #if nj >21: continue
       
       filter_eff = None
       n_acc = None
@@ -104,6 +108,7 @@ if __name__ == "__main__":
     tot_timeGenEvents[p.name] = sum(timeEvents[p.name])/len(timeEvents[p.name]) if len(timeEvents[p.name]) !=0 else 0
     tot_timeGenEvent[p.name]  = sum(timeEvents[p.name])/len(timeEvents[p.name])/(sum(nGenEvents[p.name])/len(nGenEvents[p.name])) if tot_timeGenEvents[p.name]!=0 else 0
     tot_timeTotEvent[p.name]  = sum(timeEvents[p.name])/len(timeEvents[p.name])/(sum(nTotEvents[p.name])/len(nTotEvents[p.name])) if tot_timeGenEvents[p.name]!=0 else 0
+    tot_scores[p.name]        = 8*3600./(tot_timeGenEvent[p.name])
 
 
     # get the size from the root files
@@ -116,8 +121,8 @@ if __name__ == "__main__":
     tot_sizeGenEvent[p.name] = sum(sizeEvents[p.name])/tot_nGenEvents[p.name]
 
     # summary print out
-    this_line = '{:12.1f} {:12.1e} {:12.2e} {:12.1f} {:12.1f} {:12.1f} {:12.0f} {:12.3f} {:12.1f}'.format(p.mass,p.ctau,tot_filterEffs[p.name], tot_nGenEvents[p.name], 
-                tot_nTotEvents[p.name], tot_timeGenEvents[p.name],tot_timeGenEvent[p.name], tot_timeTotEvent[p.name], tot_sizeGenEvent[p.name])
+    this_line = '{:12.1f} {:12.1e} {:12.2e} {:12.1f} {:12.1f} {:12.1f} {:12.0f} {:12.3f} {:12.1f} {:12.0f}'.format(p.mass,p.ctau,tot_filterEffs[p.name], tot_nGenEvents[p.name], 
+                tot_nTotEvents[p.name], tot_timeGenEvents[p.name],tot_timeGenEvent[p.name], tot_timeTotEvent[p.name], tot_sizeGenEvent[p.name], tot_scores[p.name])
 
     this_line_for_table = '({m:.1f}, {ct:8.1f}, {eff:.2e}, {time:.2f}, {size:.1f}),'.format(m=p.mass,ct=p.ctau,eff=tot_filterEffs[p.name],
                                                                                             time=tot_timeGenEvent[p.name],size=tot_sizeGenEvent[p.name]) 
@@ -128,7 +133,7 @@ if __name__ == "__main__":
     final_lines_for_table.append(this_line_for_table)
 
   print('\nSummary table')
-  print('\n{:12s} {:12s} {:12s} {:12s} {:12s} {:12s} {:12s} {:12s}').format('Mass', 'ctau(mm)', 'Avg Filter Eff', 'NGen', 'NTot', 'Avg Time (s)', 'AvgTime/evt (s)', 'AvgSize/evt (MB)')
+  print('\n{:12s} {:12s} {:12s} {:12s} {:12s} {:12s} {:12s} {:12s} {:12s}').format('Mass', 'ctau(mm)', 'Avg Filter Eff', 'NGen', 'NTot', 'Avg Time (s)', 'AvgTime/evt (s)', 'AvgSize/evt (MB)', 'Score')
   print('\n'.join(final_lines))
 
   print('\nTable for point file')
