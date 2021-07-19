@@ -4,14 +4,16 @@ from for_request_points    import m_ctau_eff_time_s as points_B
 from for_request_points_Bc import m_ctau_eff_time_s as points_Bc
 
 doScore = False
-version = '12072021'
+version = '19072021' #12072021
 
 if doScore:
   fout = open('request_{v}_score.csv'.format(v=version), 'w')
-  fout.write('dataset,fragment,events,generator,time per event,filter efficiency,size per event,score\n')
+  #fout.write('dataset,fragment,events,generator,time per event,filter efficiency,size per event,score\n')
+  fout.write('dataset,fragment,events,generator,time per event,size per event,match efficiency,filter efficiency,score\n')
 else:
   fout = open('request_{v}.csv'.format(v=version), 'w')
-  fout.write('dataset,fragment,events,generator,time per event,filter efficiency,size per event\n')
+  #fout.write('dataset,fragment,events,generator,time per event,filter efficiency,size per event\n')
+  fout.write('dataset,fragment,events,generator,time per event,size per event,match efficiency,filter efficiency\n')
 
 all_points = [(m,ctau,eff,time,size,nevts,'B') for m,ctau,eff,time,size,nevts in points_B] + [(m,ctau,eff,time,size,nevts,'Bc') for m,ctau,eff,time,size,nevts in points_Bc]
 
@@ -39,12 +41,12 @@ for m,ctau,eff,time,size,nevts,spc in all_points:
 
 
   if not doScore:
-    fout.write('{dataset},{fragment},{events},{generator},{timeperevent},{filterefficiency},{sizeperevent}\n'.format(
-                dataset=ds, fragment=fragment, events=events, generator=generator,
+    fout.write('{dataset},{fragment},{events},{generator},{timeperevent},{sizeperevent},{matchefficiency},{filterefficiency}\n'.format(
+                dataset=ds, fragment=fragment, events=events, generator=generator, matchefficiency=1.0,
                 timeperevent=timeperevent, filterefficiency=filterefficiency, sizeperevent=sizeperevent))
   else:
-    fout.write('{dataset},{fragment},{events},{generator},{timeperevent},{filterefficiency},{sizeperevent},{score}\n'.format(
-                dataset=ds, fragment=fragment, events=events, generator=generator,
+    fout.write('{dataset},{fragment},{events},{generator},{timeperevent},{sizeperevent},{matchefficiency},{filterefficiency},{score}\n'.format(
+                dataset=ds, fragment=fragment, events=events, generator=generator, matchefficiency=1.0,
                 timeperevent=timeperevent, filterefficiency=filterefficiency, sizeperevent=sizeperevent,score=(8*3600/(time*eff))*eff))
   
 fout.close() 
