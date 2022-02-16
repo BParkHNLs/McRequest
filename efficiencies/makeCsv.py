@@ -1,9 +1,14 @@
+'''
+Script to produce the csv files for the sample requests
+'''
+
+
 #from pilot_V33_stats_Lxy1300_tkPt500MeV_lepPt400MeV_points import m_ctau_eff_time_s as points_B  
 #from pilot_V33_stats_Lxy1300_tkPt500MeV_lepPt400MeV_Bc_points import m_ctau_eff_time_s as points_Bc
 from for_request_points    import m_ctau_eff_time_s as points_B  
 from for_request_points_Bc import m_ctau_eff_time_s as points_Bc
 
-doScore = False
+doScore = False  # should be false for the csv file for the request
 version = '19072021' #12072021
 
 if doScore:

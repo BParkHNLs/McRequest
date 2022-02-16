@@ -15,8 +15,9 @@ export PYTHONPATH=$PYTHONPATH:$PWD
 
 ## Directory structure
 
-### The [./effieciencies](./efficiencies) directory
-It is used to create the .csv file that is needed for the request
+### The [./efficiencies](./efficiencies) directory
+It is used to create the .csv file that is needed for the request: [makeCsv.py](./efficiencies/makeCsv.py).
+Please, note that the inputs for this script need to be manually, starting from the information provided by [getFilterEff.py](./slurm/getFilterEff.py), and from the final estimates of the requested statistics (this was done in spreadsheets, see [presentation](https://indico.cern.ch/event/1054487/contributions/4431389/attachments/2278382/3873756/2021_07_07_Bpark_Signal_forEXO.pdf).
 
 ### The [./evtGenData](./evtGenData) directory
 It is at this point useless, as all this data is already included in the distributions of CMSSW and CMS-data, so it is not used while running tests.
