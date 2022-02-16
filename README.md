@@ -26,7 +26,7 @@ It contains the final versions of the .DEC and .pdl files.
 It contains the final fragments that were used for the request
 
 ### The [./python](./python) directory
-It contains a copy of the `objects.py`, `decays.py`, `common.py` directories.
+It contains a copy of the `objects.py`, `decays.py`, `common.py` libraries.
 In truth only the class `Point` is used.
 
 ### The [./slurm](./slurm) directory

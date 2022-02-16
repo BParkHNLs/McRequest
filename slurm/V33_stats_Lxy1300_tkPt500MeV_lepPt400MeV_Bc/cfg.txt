@@ -1,0 +1,11 @@
+Run prodHelper.py with following options
+dobc           : True      
+domultijob     : False     
+domultithread  : False     
+dosubmit       : True      
+mem            : 1000      
+nevts          : 10        
+njobs          : 10        
+pointFile      : V33_stats_Lxy1300_tkPt500MeV_lepPt400MeV_Bc_points.py
+time           : 08        
+ver            : V33_stats_Lxy1300_tkPt500MeV_lepPt400MeV_Bc

@@ -1,7 +1,10 @@
 '''
-Script to retrieve for each mass-V2 point:
-- generator filter efficiency => and average over the files
-- number of events generated  => and sum them over the files
+Script to retrieve for each mass-ctau point:
+- generator filter efficiency 
+- number of events generated  
+- size of the events 
+- time it takes to process them
+- "score" for each sample, to understand if it is suitable for McM (score ~> 50 will likely be accepted)
 '''
 import sys
 import os
