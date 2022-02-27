@@ -39,8 +39,8 @@ for m,ctau,eff,time,size,nevts,spc in all_points:
   fragment = path + frag_name + '_TuneCP5_13TeV_pythia8-evtgen' + '_cfi.py' 
   events = nevts
   generator = 'pythia8-evtgen'
-  timeperevent = '{:.2e}'.format(time*eff)
-  #timeperevent = '{:.2e}'.format(time)
+  timeperevent = '{:.2e}'.format(time*eff)   # NOTE: time         (for us)          is the time it takes to generate an event that passes the filter (after filter)
+                                             #       timeperevent (for McM request) is the time it takes to generate an event before the requirement on the filter
   filterefficiency = '{:.2e}'.format(eff)
   sizeperevent = '{:.2e}'.format(size)
 
