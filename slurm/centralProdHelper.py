@@ -8,6 +8,7 @@ import os
 import subprocess
 
 from python.common import Point
+from python.decays import Decays
 
 class Job(object):
   def __init__(self,opt):
@@ -246,6 +247,67 @@ class Job(object):
     print('')
     print('===> Submitted {n} job arrays for {pl}\n'.format(n=len(self.points),pl=self.prodLabel))
   
+  def writeEvtGenDEC(self, p):
+    decay_table = '''
+               'Alias myB+ B+',
+               'Alias myB- B-',
+               'Alias myB0 B0',
+               'Alias myB0bar anti-B0',
+               'Alias myB0s B_s0',
+               'Alias myB0sbar anti-B_s0',
+               'ChargeConj myB+ myB-',
+               'ChargeConj myB0 myB0bar',
+               'ChargeConj myB0s myB0sbar', 
+               'Decay myB+',
+               '{Bp_br0:.10f}               mu+    hnl    PHSP;',
+               '{Bp_br1:.10f}    anti-D0    mu+    hnl    PHSP;',
+               '{Bp_br2:.10f}    anti-D*0   mu+    hnl    PHSP;',
+               '{Bp_br3:.10f}    pi0        mu+    hnl    PHSP;',
+               '{Bp_br4:.10f}    rho0       mu+    hnl    PHSP;',
+               'Enddecay',
+               'CDecay myB-',
+               'Decay myB0',
+               '{B0_br1:.10f}    D-    mu+    hnl    PHSP;',
+               '{B0_br2:.10f}    D*-   mu+    hnl    PHSP;',
+               '{B0_br3:.10f}    pi-   mu+    hnl    PHSP;',
+               '{B0_br4:.10f}   rho-   mu+    hnl    PHSP;',
+               'Enddecay',
+               'CDecay myB0bar',
+               'Decay myB0s',
+               '{B0s_br1:.10f}    D_s-    mu+    hnl    PHSP;',
+               '{B0s_br2:.10f}    D_s*-   mu+    hnl    PHSP;',
+               '{B0s_br3:.10f}    K-      mu+    hnl    PHSP;',
+               '{B0s_br4:.10f}    K*-     mu+    hnl    PHSP;',
+               'Enddecay',
+               'CDecay myB0sbar',
+               'Decay hnl',
+               '0.5     mu-    pi+    PHSP;',
+               '0.5     mu+    pi-    PHSP;',
+               'Enddecay',
+               'End',      
+'''
+    dec = Decays(mass=p.mass, mixing_angle_square=1)
+
+    decay_table = decay_table.format(
+                       Bp_br0=dec.B_to_uHNL.BR*1000,
+                       Bp_br1=dec.B_to_D0uHNL.BR*1000,
+                       Bp_br2=dec.B_to_D0staruHNL.BR*1000,
+                       Bp_br3=dec.B_to_pi0uHNL.BR*1000,
+                       Bp_br4=dec.B_to_rho0uHNL.BR*1000,
+
+                       B0_br1=dec.B0_to_DuHNL.BR*1000,
+                       B0_br2=dec.B0_to_DstaruHNL.BR*1000,
+                       B0_br3=dec.B0_to_piuHNL.BR*1000,
+                       B0_br4=dec.B0_to_rhouHNL.BR*1000,
+
+                       B0s_br1=dec.Bs_to_DsuHNL.BR*1000,
+                       B0s_br2=dec.Bs_to_DsstaruHNL.BR*1000,
+                       B0s_br3=dec.Bs_to_KuHNL.BR*1000,
+                       B0s_br4=dec.Bs_to_KstaruHNL.BR*1000,
+                       )
+
+    return decay_table
+
 
   def writeFragments(self):
     for i,p in enumerate(self.points):
@@ -309,7 +371,9 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
             
             operates_on_particles = cms.vint32(521, -521, 511, -511, 531, -531), 
             particle_property_file = cms.FileInPath('GeneratorInterface/EvtGenInterface/data/evt_BHNL_mass{MASS:.1f}_ctau{CTAU:.1f}_maj.pdl'),
-            user_decay_file = cms.vstring('GeneratorInterface/EvtGenInterface/data/HNLdecay_mass{MASS:.1f}_maj_emu.DEC'),
+            user_decay_embedded = cms.vstring(
+              {decay_table}
+            )
         ),
         parameterSets = cms.vstring('EvtGen130'),
     ),
@@ -336,7 +400,11 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
 
 ProductionFilterSequence = cms.Sequence(generator+BFilter+DoubleMuFilter+HNLDisplacementFilter)
 
-'''.format(MASS=p.mass,CTAU=p.ctau)
+'''.format(
+      MASS = p.mass,
+      CTAU = p.ctau,
+      decay_table = self.writeEvtGenDEC(p)
+    )
         f.write(tobewritten)
     print('')
     print('===> Wrote the fragments \n')
