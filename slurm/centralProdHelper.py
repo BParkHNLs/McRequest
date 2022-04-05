@@ -329,7 +329,6 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
     ), 
 
     comEnergy = cms.double(13000.0),
-    filterEfficiency = cms.untracked.double(-1),      # this will not be used by Pythia, only saved in GenInfo 
     maxEventsToPrint = cms.untracked.int32(0),        
     pythiaHepMCVerbosity = cms.untracked.bool(False), 
     pythiaPylistVerbosity = cms.untracked.int32(0),
@@ -414,7 +413,6 @@ generator = cms.EDFilter("Pythia8HadronizerFilter",
     ),
 
     comEnergy = cms.double(13000.0),
-    filterEfficiency = cms.untracked.double(-1),      # this will not be used by Pythia, only saved in GenInfo 
     maxEventsToPrint = cms.untracked.int32(0),        
     pythiaHepMCVerbosity = cms.untracked.bool(False), 
     pythiaPylistVerbosity = cms.untracked.int32(0),
