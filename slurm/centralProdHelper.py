@@ -438,16 +438,23 @@ BFilter = cms.EDFilter("MCMultiParticleFilter",
    Status = cms.vint32(0), 
 )
 
-BToNMuXFilter = cms.EDFilter("PythiaFilterMotherSister", 
-    MaxEta = cms.untracked.double(1.55),
-    MinEta = cms.untracked.double(-1.55),
-    MinPt = cms.untracked.double(6.8), 
+DoubleMuFilter = cms.EDFilter("MCParticlePairFilter",
+    MaxEta = cms.untracked.vdouble(1.55, 2.45), 
+    MinEta = cms.untracked.vdouble(-1.55, -2.45),
+    MinPt = cms.untracked.vdouble(6.8, 1.0),
+    ParticleID1 = cms.untracked.vint32(-13, 13),
+    ParticleID2 = cms.untracked.vint32(-13, 13),
+    MaxInvMass = cms.untracked.double(10.),
+    Status = cms.untracked.vint32(1, 1),
+)
+
+HNLDisplacementFilter = cms.EDFilter("PythiaFilterMotherSister", 
     ParticleID = cms.untracked.int32(13),
-    MotherIDs = cms.untracked.vint32(541), 
-    SisterID = cms.untracked.int32(9900015), 
-    MaxSisterDisplacement = cms.untracked.double(1300.), # max Lxy displacement to generate in mm, -1 for no max
-    NephewIDs = cms.untracked.vint32(11,13,211), # ids of the nephews you want to check the pt of
-    MinNephewPts = cms.untracked.vdouble(0.4,0.4,0.5), 
+    MotherIDs = cms.untracked.vint32(541),
+    SisterID = cms.untracked.int32(9900015),
+    MaxSisterDisplacement = cms.untracked.double(1300.),
+    NephewIDs = cms.untracked.vint32(13,211),
+    MinNephewPts = cms.untracked.vdouble(0.4, 0.5),
 )
 
 generator = cms.EDFilter("Pythia8HadronizerFilter",
@@ -486,8 +493,7 @@ generator = cms.EDFilter("Pythia8HadronizerFilter",
     pythiaPylistVerbosity = cms.untracked.int32(0),
 )
 
-
-ProductionFilterSequence = cms.Sequence(generator+BFilter+BToNMuXFilter)
+ProductionFilterSequence = cms.Sequence(generator+BFilter+DoubleMuFilter+HNLDisplacementFilter)
 
 '''.format(MASS=p.mass,CTAU=p.ctau)
         f.write(tobewritten)
