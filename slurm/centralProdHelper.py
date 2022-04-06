@@ -214,7 +214,8 @@ class Job(object):
           frag=p.fragname,
           nevtsjob=nevtsjob_toset,
           #bcadd='--filein root://eosuser.cern.ch//eos/user/m/mratti/BHNL_Bc_LHEtoRoot_step0_nj90.root' if self.dobc else '',
-          bcadd='--filein root://t3dcachedb.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/anlyon/BHNLsGen/LHE_files/Bc_LHE_600M/bcvegpy_200k_${SLURM_ARRAY_TASK_ID}.lhe' if self.dobc else '',
+          #bcadd='--filein root://t3dcachedb.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/anlyon/BHNLsGen/LHE_files/Bc_LHE_600M/bcvegpy_200k_${SLURM_ARRAY_TASK_ID}.lhe' if self.dobc else '',
+          bcadd='--filein root://t3dcachedb.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mratti/BHNLsGen/BHNL_Bc_LHEGEN_v0_testMerged/BHNL_Bc_LHEtoRoot_step0_nj0.root' if self.dobc else '',
           timestamp=self.makeTimeStamp()
           )
       launcherFile = '{pl}/slurm_mass{m}_ctau{ctau}_prod.sh'.format(pl=self.prodLabel,m=p.mass,ctau=p.ctau)
