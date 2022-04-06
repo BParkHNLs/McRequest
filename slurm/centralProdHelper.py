@@ -309,6 +309,31 @@ class Job(object):
     return decay_table
 
 
+  def writeEvtGenDEC_Bc(self, p):
+    decay_table = '''
+               'Alias myB+ B+',
+               'Alias myBc+ B_c+',
+               'Alias myBc- B_c-',
+               'ChargeConj myBc+ myBc-',
+               'Decay myBc+',
+               '{Bc_br0:.10f}               mu+    hnl    PHSP;',
+               'Enddecay',
+               'CDecay myBc-',
+               'Decay hnl',
+               '0.5     mu-    pi+    PHSP;',
+               '0.5     mu+    pi-    PHSP;',
+               'Enddecay',
+               'End',      
+'''
+    dec = Decays(mass=p.mass, mixing_angle_square=1)
+
+    decay_table = decay_table.format(
+                       Bc_br0=dec.Bc_to_uHNL.BR*1000,
+                       )
+
+    return decay_table
+
+
   def writeFragments(self):
     for i,p in enumerate(self.points):
       fragname = 'BToNMuX_NToEMuPi_SoftQCD_b_mN{:.1f}_ctau{:.1f}mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py'.format(p.mass,p.ctau)
@@ -470,7 +495,9 @@ generator = cms.EDFilter("Pythia8HadronizerFilter",
             
             operates_on_particles = cms.vint32(541, -541), 
             particle_property_file = cms.FileInPath('GeneratorInterface/EvtGenInterface/data/evt_BHNL_mass{MASS:.1f}_ctau{CTAU:.1f}_maj.pdl'),
-            user_decay_file = cms.vstring('GeneratorInterface/EvtGenInterface/data/HNLdecay_mass{MASS:.1f}_maj_emu_Bc.DEC'),
+            user_decay_embedded = cms.vstring(
+              {decay_table}
+            )
         ),
         parameterSets = cms.vstring('EvtGen130'),
     ),
@@ -495,7 +522,11 @@ generator = cms.EDFilter("Pythia8HadronizerFilter",
 
 ProductionFilterSequence = cms.Sequence(generator+BFilter+DoubleMuFilter+HNLDisplacementFilter)
 
-'''.format(MASS=p.mass,CTAU=p.ctau)
+'''.format(
+      MASS = p.mass,
+      CTAU = p.ctau,
+      decay_table = self.writeEvtGenDEC_Bc(p)
+    )
         f.write(tobewritten)
     print('')
     print('===> Wrote the fragments \n')
