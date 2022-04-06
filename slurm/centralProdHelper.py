@@ -336,7 +336,7 @@ class Job(object):
 
   def writeFragments(self):
     for i,p in enumerate(self.points):
-      fragname = 'BToNMuX_NToEMuPi_SoftQCD_b_mN{:.1f}_ctau{:.1f}mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py'.format(p.mass,p.ctau)
+      fragname = 'BToHNLMuX_HNLToMuPi_SoftQCD_b_mHNL{:.1f}_ctau{:.1f}mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py'.format(p.mass, p.ctau)
       p.fragname = fragname
       with open('{}/{}'.format(self.prodLabel,p.fragname), 'w') as f:
         tobewritten = '''
@@ -437,9 +437,9 @@ ProductionFilterSequence = cms.Sequence(generator+BFilter+DoubleMuFilter+HNLDisp
   def writeFragmentsBc(self):
     for p in self.points:
       if p.ctau!=0.01:
-       fragname = 'BcToNMuX_NToEMuPi_SoftQCD_b_mN{:.1f}_ctau{:.1f}mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py'.format(p.mass,p.ctau)
+       fragname = 'BcToHNLMuX_HNLToMuPi_SoftQCD_b_mHNL_SoftQCD_b_mN{:.1f}_ctau{:.1f}mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py'.format(p.mass, p.ctau)
       else:
-       fragname = 'BcToNMuX_NToEMuPi_SoftQCD_b_mN{:.1f}_ctau{:.2f}mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py'.format(p.mass,p.ctau)
+       fragname = 'BcToHNLMuX_HNLToMuPi_SoftQCD_b_mHNL_SoftQCD_b_mN{:.1f}_ctau{:.2f}mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py'.format(p.mass, p.ctau)
       p.fragname = fragname
       with open('{}/{}'.format(self.prodLabel,p.fragname), 'w') as f:
         tobewritten = '''
