@@ -528,6 +528,9 @@ ProductionFilterSequence = cms.Sequence(generator+BFilter+DoubleMuFilter+HNLDisp
       CTAU = p.ctau,
       decay_table = self.writeEvtGenDEC_Bc(p)
     )
+        if p.ctau == 0.01:
+          print 'ici'
+          tobewritten = tobewritten.replace('ctau0.0_maj.pdl', 'ctau0.01_maj.pdl')
         f.write(tobewritten)
     print('')
     print('===> Wrote the fragments \n')
