@@ -2,40 +2,43 @@
 Script to produce the csv files for the sample requests
 '''
 
+from request_points_Apr22 import request_points as points_B
+from request_points_Apr22_Bc import request_points as points_Bc
 
-#from pilot_V33_stats_Lxy1300_tkPt500MeV_lepPt400MeV_points import m_ctau_eff_time_s as points_B  
-#from pilot_V33_stats_Lxy1300_tkPt500MeV_lepPt400MeV_Bc_points import m_ctau_eff_time_s as points_Bc
-from for_request_points    import m_ctau_eff_time_s as points_B  
-from for_request_points_Bc import m_ctau_eff_time_s as points_Bc
-
-doScore = False  # should be false for the csv file for the request
-version = '19072021' #12072021
+doScore = True  # should be false for the csv file for the request
+doBc = True
+version = '13042022'
 
 if doScore:
-  fout = open('request_{v}_score.csv'.format(v=version), 'w')
-  #fout.write('dataset,fragment,events,generator,time per event,filter efficiency,size per event,score\n')
+  fout_name = 'request_{v}_score.csv'.format(v=version) if not doBc else 'request_{v}_Bc_score.csv'.format(v=version)
+  fout = open(fout_name, 'w')
   fout.write('dataset,fragment,events,generator,time per event,size per event,match efficiency,filter efficiency,score\n')
 else:
-  fout = open('request_{v}.csv'.format(v=version), 'w')
-  #fout.write('dataset,fragment,events,generator,time per event,filter efficiency,size per event\n')
+  fout_name = 'request_{v}.csv'.format(v=version) if not doBc else 'request_{v}_Bc.csv'.format(v=version)
+  fout = open(fout_name, 'w')
   fout.write('dataset,fragment,events,generator,time per event,size per event,match efficiency,filter efficiency\n')
 
-all_points = [(m,ctau,eff,time,size,nevts,'B') for m,ctau,eff,time,size,nevts in points_B] + [(m,ctau,eff,time,size,nevts,'Bc') for m,ctau,eff,time,size,nevts in points_Bc]
+if not doBc:
+  all_points = [(m,ctau,eff,time,size,nevts,'B') for m,ctau,eff,time,size,nevts in points_B]
+else:
+  all_points = [(m,ctau,eff,time,size,nevts,'Bc') for m,ctau,eff,time,size,nevts in points_Bc]
 
 for m,ctau,eff,time,size,nevts,spc in all_points:
   # name for fragment
   if ctau!=0.01:
-    frag_name = '{}ToNMuX_NToEMuPi_SoftQCD_b_mN{:.1f}_ctau{:.1f}mm'.format(spc,m,ctau)
+    frag_name = '{}ToHNLMuX_HNLToMuPi_SoftQCD_b_mHNL{:.1f}_ctau{:.1f}mm'.format(spc,m,ctau)
   else:
-    frag_name = '{}ToNMuX_NToEMuPi_SoftQCD_b_mN{:.1f}_ctau{:.2f}mm'.format(spc,m,ctau)
+    frag_name = '{}ToHNLMuX_HNLToMuPi_SoftQCD_b_mHNL{:.1f}_ctau{:.2f}mm'.format(spc,m,ctau)
  
   # name for dataset
   # see https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=%2FBuToKPsi2S_Toee_Mufilter_SoftQCDnonD_TuneCP5_13TeV-pythia8-evtgen%2FRunIIAutumn18MiniAOD-PUPoissonAve20_BParking_102X_upgrade2018_realistic_v15-v1%2FMINIAODSIM
   # and https://cms-pdmv.gitbook.io/project/mccontact/rules-for-dataset-names
-  ds_name = '{}ToNMuX_NToEMuPi_SoftQCD_b_mN{}_ctau{}mm'.format(spc,str(m).replace('.', 'p'),str(ctau).replace('.','p'))
-
+  ds_name = '{}ToHNLMuX_HNLToMuPi_SoftQCD_b_mHNL{}_ctau{}mm'.format(spc,str(m).replace('.', 'p'),str(ctau).replace('.','p'))
   ds = ds_name + '_TuneCP5_13TeV-pythia8-evtgen'
-  path = 'genFragments/Generator/Pythia/BHNL/'
+  if not doBc:
+    path = 'genFragments/Generator/Pythia/BToHNLMuX_HNLToMuPi/' 
+  else:
+    path = 'genFragments/Hadronizer/13TeV/BcToHNLMuX_HNLToMuPi/'
   fragment = path + frag_name + '_TuneCP5_13TeV_pythia8-evtgen' + '_cfi.py' 
   events = nevts
   generator = 'pythia8-evtgen'
