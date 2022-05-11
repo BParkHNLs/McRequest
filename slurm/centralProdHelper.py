@@ -363,21 +363,30 @@ class Job(object):
                'Alias myB+ B+',
                'Alias myBc+ B_c+',
                'Alias myBc- B_c-',
+               'Alias myHNL_mu hnl',
+               'Alias myHNL_e hnl',
                'ChargeConj myBc+ myBc-',
                'Decay myBc+',
-               '{Bc_br0:.10f}               mu+    hnl    PHSP;',
+               '{Bc_brmu0:.10f}               mu+    myHNL_mu    PHSP;',
+               '{Bc_brmu0:.10f}               mu+    myHNL_e     PHSP;',
+               '{Bc_bre0:.10f}                e+     myHNL_mu    PHSP;',
                'Enddecay',
                'CDecay myBc-',
-               'Decay hnl',
+               'Decay myHNL_mu',
                '0.5     mu-    pi+    PHSP;',
                '0.5     mu+    pi-    PHSP;',
+               'Enddecay',
+               'Decay myHNL_e',
+               '0.5     e-     pi+    PHSP;',
+               '0.5     e+     pi-    PHSP;',
                'Enddecay',
                'End',      
 '''
     dec = Decays(mass=p.mass, mixing_angle_square=1)
 
     decay_table = decay_table.format(
-                       Bc_br0=dec.Bc_to_uHNL.BR*1000,
+                       Bc_brmu0=dec.Bc_to_uHNL.BR*1000,
+                       Bc_bre0=dec.Bc_to_eHNL.BR*1000,
                        )
 
     return decay_table
