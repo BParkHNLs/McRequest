@@ -3,8 +3,8 @@
 ## Installation
 Release with *all* modifications is now available (validation test was performed)
 ```
-cmsrel CMSSW_10_2_27
-cd CMSSW_10_2_27/src
+cmsrel CMSSW_10_2_28_patch1
+cd CMSSW_10_2_28_patch1/src
 cmsenv
 git cms-init
 
@@ -15,7 +15,7 @@ source setup.sh
 
 ### After first installation
 ```
-cd CMSSW_10_2_27/src/McRequest
+cd CMSSW_10_2_28_patch1/src/McRequest
 cmsenv
 source setup.sh
 ```
