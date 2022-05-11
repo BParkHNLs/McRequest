@@ -577,9 +577,11 @@ generator = cms.EDFilter("Pythia8HadronizerFilter",
             list_forced_decays = cms.vstring(       
                 'myBc+', 
                 'myBc-',
+                'myHNL_mu',
+                'myHNL_e',
             ),
             
-            operates_on_particles = cms.vint32(541, -541), 
+            operates_on_particles = cms.vint32(541, -541, 9900015), 
             particle_property_file = cms.FileInPath('GeneratorInterface/EvtGenInterface/data/evt_BHNL_mass{MASS:.1f}_ctau{CTAU:.1f}_maj.pdl'),
             user_decay_embedded = cms.vstring(
               {decay_table}
