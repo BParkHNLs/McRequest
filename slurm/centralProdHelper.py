@@ -527,23 +527,36 @@ BFilter = cms.EDFilter("MCMultiParticleFilter",
    Status = cms.vint32(0), 
 )
 
-DoubleMuFilter = cms.EDFilter("MCParticlePairFilter",
-    MaxEta = cms.untracked.vdouble(1.55, 2.45), 
+DoubleLeptonFilter = cms.EDFilter("MCParticlePairFilter",
+    MaxEta = cms.untracked.vdouble(1.55, 2.45),
     MinEta = cms.untracked.vdouble(-1.55, -2.45),
     MinPt = cms.untracked.vdouble(6.8, 1.0),
     ParticleID1 = cms.untracked.vint32(-13, 13),
-    ParticleID2 = cms.untracked.vint32(-13, 13),
+    ParticleID2 = cms.untracked.vint32(-11, 11,-13,13),
     MaxInvMass = cms.untracked.double(10.),
     Status = cms.untracked.vint32(1, 1),
 )
 
-HNLDisplacementFilter = cms.EDFilter("PythiaFilterMotherSister", 
+TriggerMuonFilter = cms.EDFilter("PythiaFilterMultiMother", 
+    MaxEta = cms.untracked.double(1.55),
+    MinEta = cms.untracked.double(-1.55),
+    MinPt = cms.untracked.double(6.8), 
     ParticleID = cms.untracked.int32(13),
-    MotherIDs = cms.untracked.vint32(541),
-    SisterID = cms.untracked.int32(9900015),
-    MaxSisterDisplacement = cms.untracked.double(1300.),
-    NephewIDs = cms.untracked.vint32(13,211),
-    MinNephewPts = cms.untracked.vdouble(0.4, 0.5),
+    MotherIDs = cms.untracked.vint32(541, 9900015),
+)
+
+HNLPionFilter = cms.EDFilter("PythiaFilterMultiMother", 
+    MaxEta = cms.untracked.double(10.),
+    MinEta = cms.untracked.double(-10.),
+    MinPt = cms.untracked.double(0.5), 
+    ParticleID = cms.untracked.int32(211),
+    MotherIDs = cms.untracked.vint32(9900015),
+)
+
+HNLDisplacementFilter = cms.EDFilter("MCDisplacementFilter",
+    ParticleIDs = cms.vint32(9900015),
+    LengMin = cms.double(0), 
+    LengMax = cms.double(1300), 
 )
 
 generator = cms.EDFilter("Pythia8HadronizerFilter",
@@ -584,7 +597,7 @@ generator = cms.EDFilter("Pythia8HadronizerFilter",
     pythiaPylistVerbosity = cms.untracked.int32(0),
 )
 
-ProductionFilterSequence = cms.Sequence(generator+BFilter+DoubleMuFilter+HNLDisplacementFilter)
+ProductionFilterSequence = cms.Sequence(generator+BFilter+DoubleLeptonFilter+TriggerMuonFilter+HNLPionFilter+HNLDisplacementFilter)
 
 '''.format(
       MASS = p.mass,
