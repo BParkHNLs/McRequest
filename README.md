@@ -10,7 +10,14 @@ git cms-init
 
 git clone https://github.com/mgratti/McRequest.git 
 cd McRequest
-export PYTHONPATH=$PYTHONPATH:$PWD
+source setup.sh
+```
+
+### After first installation
+```
+cd CMSSW_10_2_27/src/McRequest
+cmsenv
+source setup.sh
 ```
 
 ## Directory structure
