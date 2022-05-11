@@ -385,7 +385,7 @@ class Job(object):
 
   def writeFragments(self):
     for i,p in enumerate(self.points):
-      fragname = 'BToHNLMuX_HNLToMuPi_SoftQCD_b_mHNL{:.1f}_ctau{:.1f}mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py'.format(p.mass, p.ctau)
+      fragname = 'BToHNLEMuX_HNLToEMuPi_SoftQCD_b_mHNL{:.1f}_ctau{:.1f}mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py'.format(p.mass, p.ctau)
       p.fragname = fragname
       with open('{}/{}'.format(self.prodLabel,p.fragname), 'w') as f:
         tobewritten = '''
