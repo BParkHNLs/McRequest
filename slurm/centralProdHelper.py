@@ -92,7 +92,7 @@ class Job(object):
         '#SBATCH --account=t3',
         '',
         'DIRNAME="{pl}"/mass{m}_ctau{ctau}/',
-        'STARTDIR=/work/anlyon/request/CMSSW_10_2_27/src/McRequest', 
+        'STARTDIR=/work/anlyon/request_common/CMSSW_10_2_28_patch1/src/McRequest', 
         'TOPWORKDIR="/scratch/{user}/"',
         'JOBDIR="gen_${{SLURM_JOB_ID}}_${{SLURM_ARRAY_TASK_ID}}"', # MIND THE PARENTHESIS
         'WORKDIR=$TOPWORKDIR/$JOBDIR',
@@ -122,8 +122,8 @@ class Job(object):
 
         'echo "Going to create cmssw release"',
         'cd $WORKDIR',
-        'cmsrel CMSSW_10_2_27',
-        'cd CMSSW_10_2_27/src',
+        'cmsrel CMSSW_10_2_28_patch1',
+        'cd CMSSW_10_2_28_patch1/src',
         'cmsenv',
         'pwd; ls -al',
         'echo $CMSSW_BASE',
