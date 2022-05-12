@@ -68,7 +68,6 @@ generator = cms.EDFilter("Pythia8HadronizerFilter",
             particle_property_file = cms.FileInPath('GeneratorInterface/EvtGenInterface/data/evt_BHNL_mass4.5_ctau100.0_maj.pdl'),
             user_decay_embedded = cms.vstring(
               
-               'Alias myB+ B+',
                'Alias myBc+ B_c+',
                'Alias myBc- B_c-',
                'Alias myHNL_mu hnl',

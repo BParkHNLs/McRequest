@@ -5,8 +5,8 @@ from Configuration.Generator.MCTunes2017.PythiaCP5Settings_cfi import *
 
 # Production Info
 configurationMetadata = cms.untracked.PSet(
-    annotation = cms.untracked.string('Bc -> mu N X, with long-lived N, m=3.0GeV, ctau=1.0mm'),
-    name = cms.untracked.string('Bc -> mu N X, with long-lived N, m=3.0GeV, ctau=1.0mm'),
+    annotation = cms.untracked.string('Bc -> mu N X, with long-lived N, m=4.5GeV, ctau=0.1mm'),
+    name = cms.untracked.string('Bc -> mu N X, with long-lived N, m=4.5GeV, ctau=0.1mm'),
     version = cms.untracked.string('$1.0$')
 )
 
@@ -65,19 +65,18 @@ generator = cms.EDFilter("Pythia8HadronizerFilter",
             ),
             
             operates_on_particles = cms.vint32(541, -541, 9900015), 
-            particle_property_file = cms.FileInPath('GeneratorInterface/EvtGenInterface/data/evt_BHNL_mass3.0_ctau1.0_maj.pdl'),
+            particle_property_file = cms.FileInPath('GeneratorInterface/EvtGenInterface/data/evt_BHNL_mass4.5_ctau0.1_maj.pdl'),
             user_decay_embedded = cms.vstring(
               
-               'Alias myB+ B+',
                'Alias myBc+ B_c+',
                'Alias myBc- B_c-',
                'Alias myHNL_mu hnl',
                'Alias myHNL_e hnl',
                'ChargeConj myBc+ myBc-',
                'Decay myBc+',
-               '43.6399154413               mu+    myHNL_mu    PHSP;',
-               '43.6399154413               mu+    myHNL_e     PHSP;',
-               '43.5634313585                e+     myHNL_mu    PHSP;',
+               '38.8750732607               mu+    myHNL_mu    PHSP;',
+               '38.8750732607               mu+    myHNL_e     PHSP;',
+               '38.8565558168                e+     myHNL_mu    PHSP;',
                'Enddecay',
                'CDecay myBc-',
                'Decay myHNL_mu',

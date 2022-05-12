@@ -5,8 +5,8 @@ from Configuration.Generator.MCTunes2017.PythiaCP5Settings_cfi import *
 
 # Production Info
 configurationMetadata = cms.untracked.PSet(
-    annotation = cms.untracked.string('Bc -> mu N X, with long-lived N, m=5.5GeV, ctau=1.0mm'),
-    name = cms.untracked.string('Bc -> mu N X, with long-lived N, m=5.5GeV, ctau=1.0mm'),
+    annotation = cms.untracked.string('Bc -> mu N X, with long-lived N, m=5.5GeV, ctau=0.1mm'),
+    name = cms.untracked.string('Bc -> mu N X, with long-lived N, m=5.5GeV, ctau=0.1mm'),
     version = cms.untracked.string('$1.0$')
 )
 
@@ -65,10 +65,9 @@ generator = cms.EDFilter("Pythia8HadronizerFilter",
             ),
             
             operates_on_particles = cms.vint32(541, -541, 9900015), 
-            particle_property_file = cms.FileInPath('GeneratorInterface/EvtGenInterface/data/evt_BHNL_mass5.5_ctau1.0_maj.pdl'),
+            particle_property_file = cms.FileInPath('GeneratorInterface/EvtGenInterface/data/evt_BHNL_mass5.5_ctau0.1_maj.pdl'),
             user_decay_embedded = cms.vstring(
               
-               'Alias myB+ B+',
                'Alias myBc+ B_c+',
                'Alias myBc- B_c-',
                'Alias myHNL_mu hnl',
