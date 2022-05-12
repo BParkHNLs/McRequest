@@ -2,12 +2,12 @@
 Script to produce the csv files for the sample requests
 '''
 
-from request_points_Apr22 import request_points as points_B
-from request_points_Apr22_Bc import request_points as points_Bc
+from request_points_common_May22 import request_points as points_B
+from request_points_common_May22_Bc import request_points as points_Bc
 
-doScore = True  # should be false for the csv file for the request
+doScore = False  # should be false for the csv file for the request
 doBc = True
-version = '13042022'
+version = '12052022'
 
 if doScore:
   fout_name = 'request_{v}_score.csv'.format(v=version) if not doBc else 'request_{v}_Bc_score.csv'.format(v=version)
@@ -25,20 +25,29 @@ else:
 
 for m,ctau,eff,time,size,nevts,spc in all_points:
   # name for fragment
-  if ctau!=0.01:
-    frag_name = '{}ToHNLMuX_HNLToMuPi_SoftQCD_b_mHNL{:.1f}_ctau{:.1f}mm'.format(spc,m,ctau)
+  if not doBc:
+    if ctau!=0.01:
+      frag_name = 'BToHNLEMuX_HNLToEMuPi_SoftQCD_b_mHNL{:.1f}_ctau{:.1f}mm'.format(m,ctau)
+    else:
+      frag_name = 'BToHNLEMuX_HNLToEMuPi_SoftQCD_b_mHNL{:.1f}_ctau{:.2f}mm'.format(m,ctau)
   else:
-    frag_name = '{}ToHNLMuX_HNLToMuPi_SoftQCD_b_mHNL{:.1f}_ctau{:.2f}mm'.format(spc,m,ctau)
+    if ctau!=0.01:
+      frag_name = 'BcToNMuX_NToEMuPi_SoftQCD_b_mN{:.1f}_ctau{:.1f}mm'.format(m,ctau)
+    else:
+      frag_name = 'BcToNMuX_NToEMuPi_SoftQCD_b_mN{:.1f}_ctau{:.2f}mm'.format(m,ctau)
  
   # name for dataset
   # see https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=%2FBuToKPsi2S_Toee_Mufilter_SoftQCDnonD_TuneCP5_13TeV-pythia8-evtgen%2FRunIIAutumn18MiniAOD-PUPoissonAve20_BParking_102X_upgrade2018_realistic_v15-v1%2FMINIAODSIM
   # and https://cms-pdmv.gitbook.io/project/mccontact/rules-for-dataset-names
-  ds_name = '{}ToHNLMuX_HNLToMuPi_SoftQCD_b_mHNL{}_ctau{}mm'.format(spc,str(m).replace('.', 'p'),str(ctau).replace('.','p'))
+  if not doBc:
+    ds_name = 'BToHNLEMuX_HNLToEMuPi_SoftQCD_b_mHNL{}_ctau{}mm'.format(str(m).replace('.', 'p'),str(ctau).replace('.','p'))
+  else:
+    ds_name = 'BcToNMuX_NToEMuPi_SoftQCD_b_mN{}_ctau{}mm'.format(str(m).replace('.', 'p'),str(ctau).replace('.','p'))
   ds = ds_name + '_TuneCP5_13TeV-pythia8-evtgen'
   if not doBc:
-    path = 'genFragments/Generator/Pythia/BToHNLMuX_HNLToMuPi/' 
+    path = 'genFragments/Generator/Pythia/BToHNLEMuX_HNLToEMuPi/' 
   else:
-    path = 'genFragments/Hadronizer/13TeV/BcToHNLMuX_HNLToMuPi/'
+    path = 'genFragments/Hadronizer/13TeV/BcToHNLEMuX_HNLToEMuPi/'
   fragment = path + frag_name + '_TuneCP5_13TeV_pythia8-evtgen' + '_cfi.py' 
   events = nevts
   generator = 'pythia8-evtgen'
