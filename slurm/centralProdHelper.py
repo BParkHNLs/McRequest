@@ -360,7 +360,6 @@ class Job(object):
 
   def writeEvtGenDEC_Bc(self, p):
     decay_table = '''
-               'Alias myB+ B+',
                'Alias myBc+ B_c+',
                'Alias myBc- B_c-',
                'Alias myHNL_mu hnl',
