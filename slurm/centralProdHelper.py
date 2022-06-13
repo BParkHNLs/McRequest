@@ -273,6 +273,65 @@ class Job(object):
 
   
   def writeEvtGenDEC(self, p):
+    dec = Decays(mass=p.mass, mixing_angle_square=1)
+    B0_decay = '''
+               'Decay myB0',
+               '{B0_brmu1:.10f}    D-     mu+    myHNL_mu    PHSP;',
+               '{B0_brmu2:.10f}    D*-    mu+    myHNL_mu    PHSP;',
+               '{B0_brmu3:.10f}    pi-    mu+    myHNL_mu    PHSP;',
+               '{B0_brmu4:.10f}    rho-   mu+    myHNL_mu    PHSP;',
+               '{B0_brmu1:.10f}    D-     mu+    myHNL_e     PHSP;',
+               '{B0_brmu2:.10f}    D*-    mu+    myHNL_e     PHSP;',
+               '{B0_brmu3:.10f}    pi-    mu+    myHNL_e     PHSP;',
+               '{B0_brmu4:.10f}    rho-   mu+    myHNL_e     PHSP;',
+               '{B0_bre1:.10f}     D-     e+     myHNL_mu    PHSP;',
+               '{B0_bre2:.10f}     D*-    e+     myHNL_mu    PHSP;',
+               '{B0_bre3:.10f}     pi-    e+     myHNL_mu    PHSP;',
+               '{B0_bre4:.10f}     rho-   e+     myHNL_mu    PHSP;',
+               'Enddecay',
+               'CDecay myB0bar',
+'''
+    B0_decay = B0_decay.format(
+                       B0_brmu1=dec.B0_to_DuHNL.BR*1000,
+                       B0_brmu2=dec.B0_to_DstaruHNL.BR*1000,
+                       B0_brmu3=dec.B0_to_piuHNL.BR*1000,
+                       B0_brmu4=dec.B0_to_rhouHNL.BR*1000,
+
+                       B0_bre1=dec.B0_to_DeHNL.BR*1000,
+                       B0_bre2=dec.B0_to_DstareHNL.BR*1000,
+                       B0_bre3=dec.B0_to_pieHNL.BR*1000,
+                       B0_bre4=dec.B0_to_rhoeHNL.BR*1000,
+                       )
+
+    B0s_decay = '''
+               'Decay myB0s',
+               '{B0s_brmu1:.10f}    D_s-    mu+    myHNL_mu    PHSP;',
+               '{B0s_brmu2:.10f}    D_s*-   mu+    myHNL_mu    PHSP;',
+               '{B0s_brmu3:.10f}    K-      mu+    myHNL_mu    PHSP;',
+               '{B0s_brmu4:.10f}    K*-     mu+    myHNL_mu    PHSP;',
+               '{B0s_brmu1:.10f}    D_s-    mu+    myHNL_e    PHSP;',
+               '{B0s_brmu2:.10f}    D_s*-   mu+    myHNL_e    PHSP;',
+               '{B0s_brmu3:.10f}    K-      mu+    myHNL_e    PHSP;',
+               '{B0s_brmu4:.10f}    K*-     mu+    myHNL_e    PHSP;',
+               '{B0s_bre1:.10f}    D_s-     e+     myHNL_mu    PHSP;',
+               '{B0s_bre2:.10f}    D_s*-    e+     myHNL_mu    PHSP;',
+               '{B0s_bre3:.10f}    K-       e+     myHNL_mu    PHSP;',
+               '{B0s_bre4:.10f}    K*-      e+     myHNL_mu    PHSP;',
+               'Enddecay',
+               'CDecay myB0sbar',
+'''
+    B0s_decay = B0s_decay.format(
+                       B0s_brmu1=dec.Bs_to_DsuHNL.BR*1000,
+                       B0s_brmu2=dec.Bs_to_DsstaruHNL.BR*1000,
+                       B0s_brmu3=dec.Bs_to_KuHNL.BR*1000,
+                       B0s_brmu4=dec.Bs_to_KstaruHNL.BR*1000,
+
+                       B0s_bre1=dec.Bs_to_DseHNL.BR*1000,
+                       B0s_bre2=dec.Bs_to_DsstareHNL.BR*1000,
+                       B0s_bre3=dec.Bs_to_KeHNL.BR*1000,
+                       B0s_bre4=dec.Bs_to_KstareHNL.BR*1000,
+                       )
+
     decay_table = '''
                'Alias myB+ B+',
                'Alias myB- B-',
@@ -303,36 +362,8 @@ class Job(object):
                '{Bp_bre4:.10f}     rho0       e+     myHNL_mu    PHSP;',
                'Enddecay',
                'CDecay myB-',
-               'Decay myB0',
-               '{B0_brmu1:.10f}    D-     mu+    myHNL_mu    PHSP;',
-               '{B0_brmu2:.10f}    D*-    mu+    myHNL_mu    PHSP;',
-               '{B0_brmu3:.10f}    pi-    mu+    myHNL_mu    PHSP;',
-               '{B0_brmu4:.10f}    rho-   mu+    myHNL_mu    PHSP;',
-               '{B0_brmu1:.10f}    D-     mu+    myHNL_e     PHSP;',
-               '{B0_brmu2:.10f}    D*-    mu+    myHNL_e     PHSP;',
-               '{B0_brmu3:.10f}    pi-    mu+    myHNL_e     PHSP;',
-               '{B0_brmu4:.10f}    rho-   mu+    myHNL_e     PHSP;',
-               '{B0_bre1:.10f}     D-     e+     myHNL_mu    PHSP;',
-               '{B0_bre2:.10f}     D*-    e+     myHNL_mu    PHSP;',
-               '{B0_bre3:.10f}     pi-    e+     myHNL_mu    PHSP;',
-               '{B0_bre4:.10f}     rho-   e+     myHNL_mu    PHSP;',
-               'Enddecay',
-               'CDecay myB0bar',
-               'Decay myB0s',
-               '{B0s_brmu1:.10f}    D_s-    mu+    myHNL_mu    PHSP;',
-               '{B0s_brmu2:.10f}    D_s*-   mu+    myHNL_mu    PHSP;',
-               '{B0s_brmu3:.10f}    K-      mu+    myHNL_mu    PHSP;',
-               '{B0s_brmu4:.10f}    K*-     mu+    myHNL_mu    PHSP;',
-               '{B0s_brmu1:.10f}    D_s-    mu+    myHNL_e    PHSP;',
-               '{B0s_brmu2:.10f}    D_s*-   mu+    myHNL_e    PHSP;',
-               '{B0s_brmu3:.10f}    K-      mu+    myHNL_e    PHSP;',
-               '{B0s_brmu4:.10f}    K*-     mu+    myHNL_e    PHSP;',
-               '{B0s_bre1:.10f}    D_s-     e+     myHNL_mu    PHSP;',
-               '{B0s_bre2:.10f}    D_s*-    e+     myHNL_mu    PHSP;',
-               '{B0s_bre3:.10f}    K-       e+     myHNL_mu    PHSP;',
-               '{B0s_bre4:.10f}    K*-      e+     myHNL_mu    PHSP;',
-               'Enddecay',
-               'CDecay myB0sbar',
+               {add_B0_decay}
+               {add_B0s_decay}
                'Decay myHNL_mu',
                '0.5     mu-    pi+    PHSP;',
                '0.5     mu+    pi-    PHSP;',
@@ -343,9 +374,9 @@ class Job(object):
                'Enddecay',
                'End',      
 '''
-    dec = Decays(mass=p.mass, mixing_angle_square=1)
-
     decay_table = decay_table.format(
+                       add_B0_decay = B0_decay if float(p.mass) < 5.2 else '', 
+                       add_B0s_decay = B0s_decay if float(p.mass) < 4.9 else '', 
                        Bp_brmu0=dec.B_to_uHNL.BR*1000,
                        Bp_brmu1=dec.B_to_D0uHNL.BR*1000,
                        Bp_brmu2=dec.B_to_D0staruHNL.BR*1000,
@@ -357,26 +388,6 @@ class Job(object):
                        Bp_bre2=dec.B_to_D0stareHNL.BR*1000,
                        Bp_bre3=dec.B_to_pi0eHNL.BR*1000,
                        Bp_bre4=dec.B_to_rho0eHNL.BR*1000,
-
-                       B0_brmu1=dec.B0_to_DuHNL.BR*1000,
-                       B0_brmu2=dec.B0_to_DstaruHNL.BR*1000,
-                       B0_brmu3=dec.B0_to_piuHNL.BR*1000,
-                       B0_brmu4=dec.B0_to_rhouHNL.BR*1000,
-
-                       B0_bre1=dec.B0_to_DeHNL.BR*1000,
-                       B0_bre2=dec.B0_to_DstareHNL.BR*1000,
-                       B0_bre3=dec.B0_to_pieHNL.BR*1000,
-                       B0_bre4=dec.B0_to_rhoeHNL.BR*1000,
-
-                       B0s_brmu1=dec.Bs_to_DsuHNL.BR*1000,
-                       B0s_brmu2=dec.Bs_to_DsstaruHNL.BR*1000,
-                       B0s_brmu3=dec.Bs_to_KuHNL.BR*1000,
-                       B0s_brmu4=dec.Bs_to_KstaruHNL.BR*1000,
-
-                       B0s_bre1=dec.Bs_to_DseHNL.BR*1000,
-                       B0s_bre2=dec.Bs_to_DsstareHNL.BR*1000,
-                       B0s_bre3=dec.Bs_to_KeHNL.BR*1000,
-                       B0s_bre4=dec.Bs_to_KstareHNL.BR*1000,
                        )
 
     return decay_table
