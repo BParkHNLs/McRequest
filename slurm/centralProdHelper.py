@@ -148,7 +148,7 @@ class Job(object):
         'echo "Going to run step1"',
         'DATE_START_step1=`date +%s`',
         #'cmsRun {jop1} maxEvents={nevtsjob} nThr={nthr} mass={m} ctau={ctau} outputFile=BPH-step1.root seedOffset=$SLURM_ARRAY_TASK_ID doSkipMuonFilter={dsmf} doDisplFilter={ddf} doMajorana={dmj} doElectron={de} scaleToFilter={stf} minTrackPt={mtpt} minLeptonPt={mlpt} maxDisplacement={mtdd}',
-        'cmsDriver.py Configuration/GenProduction/python/fragment.py --fileout file:BPH-step1.root --mc --eventcontent FEVTDEBUG --datatier GEN-SIM --conditions 102X_upgrade2018_realistic_v11 --beamspot Realistic25ns13TeVEarly2018Collision --step GEN,SIM --geometry DB:Extended --era Run2_2018 --python_filename step1.py --no_exec --customise Configuration/DataProcessing/Utils.addMonitoring -n {nevtsjob} --mc --customise_commands process.RandomNumberGeneratorService.eventSeedOffset="cms.untracked.uint32($SLURM_ARRAY_TASK_ID)" {bcadd}',
+        'cmsDriver.py Configuration/GenProduction/python/fragment.py --fileout file:BPH-step1.root --mc --eventcontent FEVTDEBUG --datatier GEN --conditions 102X_upgrade2018_realistic_v11 --beamspot Realistic25ns13TeVEarly2018Collision --step GEN --geometry DB:Extended --era Run2_2018 --python_filename step1.py --no_exec --customise Configuration/DataProcessing/Utils.addMonitoring -n {nevtsjob} --mc --customise_commands process.RandomNumberGeneratorService.eventSeedOffset="cms.untracked.uint32($SLURM_ARRAY_TASK_ID)" {bcadd}',
         'cmsRun -e -j report.xml step1.py',
         'DATE_END_step1=`date +%s`',
         'if [ $? -eq 0 ]; then echo "Successfully run step 1"; else exit $?; fi',
