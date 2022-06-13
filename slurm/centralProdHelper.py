@@ -130,6 +130,13 @@ class Job(object):
         'echo ""',
         '',
 
+        'echo "Going to copy pdl file"',
+        'cp $STARTDIR/evtGenData/evt_BHNL_mass{MASS:.2f}_ctau{CTAU:.1f}_maj.pdl evt_BHNL_mass{MASS:.2f}_ctau{CTAU:.1f}_maj.pdl',
+        'echo "end copy"',
+
+        'echo "content workdir"',
+        'pwd; ls -al',
+
         'echo "Going to copy fragment to config dir"',
         'mkdir -p $CMSSW_BASE/src/Configuration/GenProduction/python',
         'cp $STARTDIR/slurm/{lbldir}/{frag} $CMSSW_BASE/src/Configuration/GenProduction/python/fragment.py',
@@ -203,6 +210,8 @@ class Job(object):
       ]
       template = '\n'.join(template)
       template = template.format(
+          MASS = p.mass,
+          CTAU = p.ctau,
           m=p.mass,
           ctau=p.ctau,
           hh=self.time if not self.override else p.cfg.timejob,
@@ -247,6 +256,21 @@ class Job(object):
       os.chdir('../')
     print('')
     print('===> Submitted {n} job arrays for {pl}\n'.format(n=len(self.points),pl=self.prodLabel))
+
+
+  def makeEvtGenData(self):
+    for p in self.points:      
+      hnl_lines = 'add  p Particle  hnl                          9900015  {:.7e}  0.0000000e+00  0.0000000e+00     0     1  {:.7e}    9900015\n'.format(p.mass,p.ctau,p.mass,p.ctau)
+
+      with open('../evtGenData/evt_2014.pdl', 'r') as fin:
+        contents = fin.readlines()
+        contents.insert(4, hnl_lines)
+        contents = ''.join(contents)
+      with open('../evtGenData/evt_BHNL_mass{MASS:.2f}_ctau{CTAU:.1f}_{dm}.pdl'.format(MASS=p.mass, CTAU=p.ctau, dm='maj'), 'w') as fout:
+        fout.write(contents)
+    print('')
+    print('===> Created evtGen particle property files\n')
+
   
   def writeEvtGenDEC(self, p):
     decay_table = '''
@@ -393,7 +417,7 @@ class Job(object):
 
   def writeFragments(self):
     for i,p in enumerate(self.points):
-      fragname = 'BToHNLEMuX_HNLToEMuPi_SoftQCD_b_mHNL{:.1f}_ctau{:.1f}mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py'.format(p.mass, p.ctau)
+      fragname = 'BToHNLEMuX_HNLToEMuPi_SoftQCD_b_mHNL{:.2f}_ctau{:.1f}mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py'.format(p.mass, p.ctau)
       p.fragname = fragname
       with open('{}/{}'.format(self.prodLabel,p.fragname), 'w') as f:
         tobewritten = '''
@@ -403,8 +427,8 @@ from Configuration.Generator.MCTunes2017.PythiaCP5Settings_cfi import *
 
 # Production Info
 configurationMetadata = cms.untracked.PSet(
-    annotation = cms.untracked.string('B -> mu N X, with long-lived N, m={MASS:.1f}GeV, ctau={CTAU:.1f}mm'),
-    name = cms.untracked.string('B -> mu N X, with long-lived N, m={MASS:.1f}GeV, ctau={CTAU:.1f}mm'),
+    annotation = cms.untracked.string('B -> mu N X, with long-lived N, m={MASS:.2f}GeV, ctau={CTAU:.1f}mm'),
+    name = cms.untracked.string('B -> mu N X, with long-lived N, m={MASS:.2f}GeV, ctau={CTAU:.1f}mm'),
     version = cms.untracked.string('$1.0$')
 )
 
@@ -467,7 +491,7 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
             ),
             
             operates_on_particles = cms.vint32(521, -521, 511, -511, 531, -531, 9900015), 
-            particle_property_file = cms.FileInPath('GeneratorInterface/EvtGenInterface/data/evt_BHNL_mass{MASS:.1f}_ctau{CTAU:.1f}_maj.pdl'),
+            particle_property_file = cms.FileInPath('evt_BHNL_mass{MASS:.2f}_ctau{CTAU:.1f}_maj.pdl'),
             user_decay_embedded = cms.vstring(
               {decay_table}
             )
@@ -509,9 +533,9 @@ ProductionFilterSequence = cms.Sequence(generator+BFilter+DoubleLeptonFilter+Tri
   def writeFragmentsBc(self):
     for p in self.points:
       if p.ctau!=0.01:
-       fragname = 'BcToNMuX_NToEMuPi_SoftQCD_b_mN{:.1f}_ctau{:.1f}mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py'.format(p.mass, p.ctau)
+       fragname = 'BcToNMuX_NToEMuPi_SoftQCD_b_mN{:.2f}_ctau{:.1f}mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py'.format(p.mass, p.ctau)
       else:
-       fragname = 'BcToNMuX_NToEMuPi_SoftQCD_b_mN{:.1f}_ctau{:.2f}mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py'.format(p.mass, p.ctau)
+       fragname = 'BcToNMuX_NToEMuPi_SoftQCD_b_mN{:.2f}_ctau{:.2f}mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py'.format(p.mass, p.ctau)
       p.fragname = fragname
       with open('{}/{}'.format(self.prodLabel,p.fragname), 'w') as f:
         tobewritten = '''
@@ -521,8 +545,8 @@ from Configuration.Generator.MCTunes2017.PythiaCP5Settings_cfi import *
 
 # Production Info
 configurationMetadata = cms.untracked.PSet(
-    annotation = cms.untracked.string('Bc -> mu N X, with long-lived N, m={MASS:.1f}GeV, ctau={CTAU:.1f}mm'),
-    name = cms.untracked.string('Bc -> mu N X, with long-lived N, m={MASS:.1f}GeV, ctau={CTAU:.1f}mm'),
+    annotation = cms.untracked.string('Bc -> mu N X, with long-lived N, m={MASS:.2f}GeV, ctau={CTAU:.1f}mm'),
+    name = cms.untracked.string('Bc -> mu N X, with long-lived N, m={MASS:.2f}GeV, ctau={CTAU:.1f}mm'),
     version = cms.untracked.string('$1.0$')
 )
 
@@ -581,7 +605,7 @@ generator = cms.EDFilter("Pythia8HadronizerFilter",
             ),
             
             operates_on_particles = cms.vint32(541, -541, 9900015), 
-            particle_property_file = cms.FileInPath('GeneratorInterface/EvtGenInterface/data/evt_BHNL_mass{MASS:.1f}_ctau{CTAU:.1f}_maj.pdl'),
+            particle_property_file = cms.FileInPath('evt_BHNL_mass{MASS:.2f}_ctau{CTAU:.1f}_maj.pdl'),
             user_decay_embedded = cms.vstring(
               {decay_table}
             )
@@ -662,6 +686,8 @@ if __name__ == "__main__":
   job = Job(opt)
 
   job.makeProdDir()
+
+  job.makeEvtGenData()
 
   if opt.dobc:
     job.writeFragmentsBc()
