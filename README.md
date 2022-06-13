@@ -8,7 +8,7 @@ cd CMSSW_10_2_28_patch1/src
 cmsenv
 git cms-init
 
-git clone https://github.com/mgratti/McRequest.git 
+git clone git@github.com:BParkHNLs/McRequest.git 
 cd McRequest
 source setup.sh
 ```
