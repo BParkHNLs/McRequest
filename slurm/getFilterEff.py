@@ -52,7 +52,8 @@ if __name__ == "__main__":
   tot_scores = {}
 
   final_lines  = []
-  final_lines_for_table = []
+  final_lines_for_csv_table = []
+  final_lines_for_point_table = []
   #table = []
 
   for p in points:
@@ -127,18 +128,24 @@ if __name__ == "__main__":
     this_line = '{:12.1f} {:12.1e} {:12.2e} {:12.1f} {:12.1f} {:12.1f} {:12.0f} {:12.3f} {:12.1f} {:12.0f}'.format(p.mass,p.ctau,tot_filterEffs[p.name], tot_nGenEvents[p.name], 
                 tot_nTotEvents[p.name], tot_timeGenEvents[p.name],tot_timeGenEvent[p.name], tot_timeTotEvent[p.name], tot_sizeGenEvent[p.name], tot_scores[p.name])
 
-    this_line_for_table = '({m:.1f}, {ct:8.1f}, {eff:.2e}, {time:.2f}, {size:.1f}),'.format(m=p.mass,ct=p.ctau,eff=tot_filterEffs[p.name],
+    this_line_for_csv_table = '({m:.1f}, {ct:8.1f}, {eff:.2e}, {time:.2f}, {size:.1f}),'.format(m=p.mass,ct=p.ctau,eff=tot_filterEffs[p.name],
                                                                                             time=tot_timeGenEvent[p.name],size=tot_sizeGenEvent[p.name]) 
+
+    this_line_for_point_table = '({m:.2f}, {ct:8.2f}, {eff:.2e}, {time:.2f}),'.format(m=p.mass,ct=p.ctau,eff=tot_filterEffs[p.name],
+                                                                                            time=tot_timeGenEvent[p.name]) 
     #(0.5,100000.,1.00e-04,800),
 
     print this_line
     final_lines.append(this_line)
-    final_lines_for_table.append(this_line_for_table)
+    final_lines_for_csv_table.append(this_line_for_csv_table)
+    final_lines_for_point_table.append(this_line_for_point_table)
 
   print('\nSummary table')
   print('\n{:12s} {:12s} {:12s} {:12s} {:12s} {:12s} {:12s} {:12s} {:12s}').format('Mass', 'ctau(mm)', 'Avg Filter Eff', 'NGen', 'NTot', 'Avg Time (s)', 'AvgTime/GenEvt (s)', 'AvgTime/Evt (s)', 'AvgSize/evt (MB)', 'Score')
   print('\n'.join(final_lines))
 
-  print('\nTable for point file')
-  print('\n'.join(final_lines_for_table))
+  print('\nTable for csv file')
+  print('\n'.join(final_lines_for_csv_table))
 
+  print('\nTable for point file')
+  print('\n'.join(final_lines_for_point_table))
