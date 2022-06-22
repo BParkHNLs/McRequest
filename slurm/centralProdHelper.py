@@ -6,6 +6,7 @@ a version of prodHelper.py adapted to run on fragments rather than cmsdrivers
 import sys
 import os
 import subprocess
+import random
 
 from python.common import Point
 from python.decays import Decays
@@ -65,6 +66,16 @@ class Job(object):
       p.stamp_simpli()
       if p.cfg is not None: p.cfg.stamp()
     print('')
+
+
+  def getRandomLHEfile(self):
+    lhe_file_idx = random.randint(1,161) # there are 161 files in total
+    lhe_file_list = open('../data/lhe_samples_full.txt')
+    lhe_files = lhe_file_list.readlines()
+    for ifile, lhe_file in enumerate(lhe_files):
+      if ifile != lhe_file_idx: continue
+      random_lhe_file = lhe_file
+    return random_lhe_file
 
 
   def makeTimeStamp(self):
@@ -222,9 +233,7 @@ class Job(object):
           user=self.user,
           frag=p.fragname,
           nevtsjob=nevtsjob_toset,
-          #bcadd='--filein root://eosuser.cern.ch//eos/user/m/mratti/BHNL_Bc_LHEtoRoot_step0_nj90.root' if self.dobc else '',
-          #bcadd='--filein root://t3dcachedb.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/anlyon/BHNLsGen/LHE_files/Bc_LHE_600M/bcvegpy_200k_${SLURM_ARRAY_TASK_ID}.lhe' if self.dobc else '',
-          bcadd='--filein root://t3dcachedb.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mratti/BHNLsGen/BHNL_Bc_LHEGEN_v0_testMerged/BHNL_Bc_LHEtoRoot_step0_nj0.root' if self.dobc else '',
+          bcadd='--filein {}'.format(self.getRandomLHEfile()) if self.dobc else '',
           timestamp=self.makeTimeStamp()
           )
       launcherFile = '{pl}/slurm_mass{m}_ctau{ctau}_prod.sh'.format(pl=self.prodLabel,m=p.mass,ctau=p.ctau)
@@ -540,6 +549,7 @@ ProductionFilterSequence = cms.Sequence(generator+BFilter+DoubleLeptonFilter+Tri
         f.write(tobewritten)
     print('')
     print('===> Wrote the fragments \n')
+
 
   def writeFragmentsBc(self):
     for p in self.points:
