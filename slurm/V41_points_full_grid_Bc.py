@@ -52,7 +52,7 @@ m_ctau_eff_time_s = [
 points = []
 for m,ctau,eff,time in m_ctau_eff_time_s:
   p   = Point(mass=m,ctau=ctau,vv=None,ismaj=True)
-  cfg = Config(nevtseff=1000,muoneff=eff,displeff=1.0,timeevt=time,timejob=1,contingency=3)
+  cfg = Config(nevtseff=5000,muoneff=eff,displeff=1.0,timeevt=time,timejob=1,contingency=10)
   p.setConfig(cfg)
   points.append(p)
 
