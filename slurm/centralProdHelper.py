@@ -95,7 +95,8 @@ class Job(object):
         '#SBATCH -J prod_m{m}_ctau{ctau}',
         '#SBATCH -o logs/prod_mass{m}_ctau{ctau}_%a.log', 
         '#SBATCH -e logs/prod_mass{m}_ctau{ctau}_%a.log',
-        '#SBATCH -p standard',
+        #'#SBATCH -p standard',
+        '#SBATCH -p short',
         #'#SBATCH -t {hh}:00:00',
         '#SBATCH --mem {mem}',
         '#SBATCH --array={arr}',
@@ -341,63 +342,155 @@ class Job(object):
                        B0s_bre4=dec.Bs_to_KstareHNL.BR*1000,
                        )
 
-    decay_table = '''
-               'Alias myB+ B+',
-               'Alias myB- B-',
-               'Alias myB0 B0',
-               'Alias myB0bar anti-B0',
-               'Alias myB0s B_s0',
-               'Alias myB0sbar anti-B_s0',
-               'Alias myHNL_mu hnl',
-               'Alias myHNL_e hnl',
-               'ChargeConj myB+ myB-',
-               'ChargeConj myB0 myB0bar',
-               'ChargeConj myB0s myB0sbar', 
-               'Decay myB+',
-               '{Bp_brmu0:.10f}               mu+    myHNL_mu    PHSP;',
-               '{Bp_brmu1:.10f}    anti-D0    mu+    myHNL_mu    PHSP;',
-               '{Bp_brmu2:.10f}    anti-D*0   mu+    myHNL_mu    PHSP;',
-               '{Bp_brmu3:.10f}    pi0        mu+    myHNL_mu    PHSP;',
-               '{Bp_brmu4:.10f}    rho0       mu+    myHNL_mu    PHSP;',
-               '{Bp_brmu0:.10f}               mu+    myHNL_e     PHSP;',
-               '{Bp_brmu1:.10f}    anti-D0    mu+    myHNL_e     PHSP;',
-               '{Bp_brmu2:.10f}    anti-D*0   mu+    myHNL_e     PHSP;',
-               '{Bp_brmu3:.10f}    pi0        mu+    myHNL_e     PHSP;',
-               '{Bp_brmu4:.10f}    rho0       mu+    myHNL_e     PHSP;',
-               '{Bp_bre0:.10f}                e+     myHNL_mu    PHSP;',
-               '{Bp_bre1:.10f}     anti-D0    e+     myHNL_mu    PHSP;',
-               '{Bp_bre2:.10f}     anti-D*0   e+     myHNL_mu    PHSP;',
-               '{Bp_bre3:.10f}     pi0        e+     myHNL_mu    PHSP;',
-               '{Bp_bre4:.10f}     rho0       e+     myHNL_mu    PHSP;',
-               'Enddecay',
-               'CDecay myB-',
-               {add_B0_decay}
-               {add_B0s_decay}
-               'Decay myHNL_mu',
-               '0.5     mu-    pi+    PHSP;',
-               '0.5     mu+    pi-    PHSP;',
-               'Enddecay',
-               'Decay myHNL_e',
-               '0.5     e-    pi+    PHSP;',
-               '0.5     e+    pi-    PHSP;',
-               'Enddecay',
-               'End',      
-'''
-    decay_table = decay_table.format(
-                       add_B0_decay = B0_decay if float(p.mass) < 5.2 else '', 
-                       add_B0s_decay = B0s_decay if float(p.mass) < 4.9 else '', 
-                       Bp_brmu0=dec.B_to_uHNL.BR*1000,
-                       Bp_brmu1=dec.B_to_D0uHNL.BR*1000,
-                       Bp_brmu2=dec.B_to_D0staruHNL.BR*1000,
-                       Bp_brmu3=dec.B_to_pi0uHNL.BR*1000,
-                       Bp_brmu4=dec.B_to_rho0uHNL.BR*1000,
+    if self.dobu:
+      decay_table = '''
+                 'Alias myB+ B+',
+                 'Alias myB- B-',
+                 'Alias myHNL_mu hnl',
+                 'Alias myHNL_e hnl',
+                 'ChargeConj myB+ myB-',
+                 'Decay myB+',
+                 '{Bp_brmu0:.10f}               mu+    myHNL_mu    PHSP;',
+                 '{Bp_brmu1:.10f}    anti-D0    mu+    myHNL_mu    PHSP;',
+                 '{Bp_brmu2:.10f}    anti-D*0   mu+    myHNL_mu    PHSP;',
+                 '{Bp_brmu3:.10f}    pi0        mu+    myHNL_mu    PHSP;',
+                 '{Bp_brmu4:.10f}    rho0       mu+    myHNL_mu    PHSP;',
+                 '{Bp_brmu0:.10f}               mu+    myHNL_e     PHSP;',
+                 '{Bp_brmu1:.10f}    anti-D0    mu+    myHNL_e     PHSP;',
+                 '{Bp_brmu2:.10f}    anti-D*0   mu+    myHNL_e     PHSP;',
+                 '{Bp_brmu3:.10f}    pi0        mu+    myHNL_e     PHSP;',
+                 '{Bp_brmu4:.10f}    rho0       mu+    myHNL_e     PHSP;',
+                 '{Bp_bre0:.10f}                e+     myHNL_mu    PHSP;',
+                 '{Bp_bre1:.10f}     anti-D0    e+     myHNL_mu    PHSP;',
+                 '{Bp_bre2:.10f}     anti-D*0   e+     myHNL_mu    PHSP;',
+                 '{Bp_bre3:.10f}     pi0        e+     myHNL_mu    PHSP;',
+                 '{Bp_bre4:.10f}     rho0       e+     myHNL_mu    PHSP;',
+                 'Enddecay',
+                 'CDecay myB-',
+                 'Decay myHNL_mu',
+                 '0.5     mu-    pi+    PHSP;',
+                 '0.5     mu+    pi-    PHSP;',
+                 'Enddecay',
+                 'Decay myHNL_e',
+                 '0.5     e-    pi+    PHSP;',
+                 '0.5     e+    pi-    PHSP;',
+                 'Enddecay',
+                 'End',      
+  '''
+      decay_table = decay_table.format(
+                         Bp_brmu0=dec.B_to_uHNL.BR*1000,
+                         Bp_brmu1=dec.B_to_D0uHNL.BR*1000,
+                         Bp_brmu2=dec.B_to_D0staruHNL.BR*1000,
+                         Bp_brmu3=dec.B_to_pi0uHNL.BR*1000,
+                         Bp_brmu4=dec.B_to_rho0uHNL.BR*1000,
+                         Bp_bre0=dec.B_to_eHNL.BR*1000,
+                         Bp_bre1=dec.B_to_D0eHNL.BR*1000,
+                         Bp_bre2=dec.B_to_D0stareHNL.BR*1000,
+                         Bp_bre3=dec.B_to_pi0eHNL.BR*1000,
+                         Bp_bre4=dec.B_to_rho0eHNL.BR*1000,
+                         )
+    elif self.dobd:
+      decay_table = '''
+                 'Alias myB0 B0',
+                 'Alias myB0bar anti-B0',
+                 'Alias myHNL_mu hnl',
+                 'Alias myHNL_e hnl',
+                 'ChargeConj myB0 myB0bar',
+                 {add_B0_decay}
+                 'Decay myHNL_mu',
+                 '0.5     mu-    pi+    PHSP;',
+                 '0.5     mu+    pi-    PHSP;',
+                 'Enddecay',
+                 'Decay myHNL_e',
+                 '0.5     e-    pi+    PHSP;',
+                 '0.5     e+    pi-    PHSP;',
+                 'Enddecay',
+                 'End',      
+  '''
+      decay_table = decay_table.format(
+                         add_B0_decay = B0_decay, 
+                         )
 
-                       Bp_bre0=dec.B_to_eHNL.BR*1000,
-                       Bp_bre1=dec.B_to_D0eHNL.BR*1000,
-                       Bp_bre2=dec.B_to_D0stareHNL.BR*1000,
-                       Bp_bre3=dec.B_to_pi0eHNL.BR*1000,
-                       Bp_bre4=dec.B_to_rho0eHNL.BR*1000,
-                       )
+    elif self.dobs:
+      decay_table = '''
+                 'Alias myB0s B_s0',
+                 'Alias myB0sbar anti-B_s0',
+                 'Alias myHNL_mu hnl',
+                 'Alias myHNL_e hnl',
+                 'ChargeConj myB0s myB0sbar', 
+                 {add_B0s_decay}
+                 'Decay myHNL_mu',
+                 '0.5     mu-    pi+    PHSP;',
+                 '0.5     mu+    pi-    PHSP;',
+                 'Enddecay',
+                 'Decay myHNL_e',
+                 '0.5     e-    pi+    PHSP;',
+                 '0.5     e+    pi-    PHSP;',
+                 'Enddecay',
+                 'End',      
+  '''
+      decay_table = decay_table.format(
+                         add_B0s_decay = B0s_decay, 
+                         )
+
+    else:
+      decay_table = '''
+                 'Alias myB+ B+',
+                 'Alias myB- B-',
+                 'Alias myB0 B0',
+                 'Alias myB0bar anti-B0',
+                 'Alias myB0s B_s0',
+                 'Alias myB0sbar anti-B_s0',
+                 'Alias myHNL_mu hnl',
+                 'Alias myHNL_e hnl',
+                 'ChargeConj myB+ myB-',
+                 'ChargeConj myB0 myB0bar',
+                 'ChargeConj myB0s myB0sbar', 
+                 'Decay myB+',
+                 '{Bp_brmu0:.10f}               mu+    myHNL_mu    PHSP;',
+                 '{Bp_brmu1:.10f}    anti-D0    mu+    myHNL_mu    PHSP;',
+                 '{Bp_brmu2:.10f}    anti-D*0   mu+    myHNL_mu    PHSP;',
+                 '{Bp_brmu3:.10f}    pi0        mu+    myHNL_mu    PHSP;',
+                 '{Bp_brmu4:.10f}    rho0       mu+    myHNL_mu    PHSP;',
+                 '{Bp_brmu0:.10f}               mu+    myHNL_e     PHSP;',
+                 '{Bp_brmu1:.10f}    anti-D0    mu+    myHNL_e     PHSP;',
+                 '{Bp_brmu2:.10f}    anti-D*0   mu+    myHNL_e     PHSP;',
+                 '{Bp_brmu3:.10f}    pi0        mu+    myHNL_e     PHSP;',
+                 '{Bp_brmu4:.10f}    rho0       mu+    myHNL_e     PHSP;',
+                 '{Bp_bre0:.10f}                e+     myHNL_mu    PHSP;',
+                 '{Bp_bre1:.10f}     anti-D0    e+     myHNL_mu    PHSP;',
+                 '{Bp_bre2:.10f}     anti-D*0   e+     myHNL_mu    PHSP;',
+                 '{Bp_bre3:.10f}     pi0        e+     myHNL_mu    PHSP;',
+                 '{Bp_bre4:.10f}     rho0       e+     myHNL_mu    PHSP;',
+                 'Enddecay',
+                 'CDecay myB-',
+                 {add_B0_decay}
+                 {add_B0s_decay}
+                 'Decay myHNL_mu',
+                 '0.5     mu-    pi+    PHSP;',
+                 '0.5     mu+    pi-    PHSP;',
+                 'Enddecay',
+                 'Decay myHNL_e',
+                 '0.5     e-    pi+    PHSP;',
+                 '0.5     e+    pi-    PHSP;',
+                 'Enddecay',
+                 'End',      
+  '''
+      decay_table = decay_table.format(
+                         add_B0_decay = B0_decay if float(p.mass) < 5.2 else '', 
+                         add_B0s_decay = B0s_decay if float(p.mass) < 4.9 else '', 
+                         Bp_brmu0=dec.B_to_uHNL.BR*1000,
+                         Bp_brmu1=dec.B_to_D0uHNL.BR*1000,
+                         Bp_brmu2=dec.B_to_D0staruHNL.BR*1000,
+                         Bp_brmu3=dec.B_to_pi0uHNL.BR*1000,
+                         Bp_brmu4=dec.B_to_rho0uHNL.BR*1000,
+
+                         Bp_bre0=dec.B_to_eHNL.BR*1000,
+                         Bp_bre1=dec.B_to_D0eHNL.BR*1000,
+                         Bp_bre2=dec.B_to_D0stareHNL.BR*1000,
+                         Bp_bre3=dec.B_to_pi0eHNL.BR*1000,
+                         Bp_bre4=dec.B_to_rho0eHNL.BR*1000,
+                         )
 
     return decay_table
 
@@ -436,6 +529,54 @@ class Job(object):
 
 
   def writeFragments(self):
+    if self.dobu:
+      pdgid = '521' 
+      pdgid_conjugate = '521, -521'
+      list_decay_string = '''
+            list_forced_decays = cms.vstring(       
+                  'myB+', 
+                  'myB-',
+                  'myHNL_mu',
+                  'myHNL_e',
+              ),
+'''
+    elif self.dobd:
+      pdgid = '511' 
+      pdgid_conjugate = '511, -511'
+      list_decay_string = '''
+            list_forced_decays = cms.vstring(       
+                  'myB0',
+                  'myB0bar',
+                  'myHNL_mu',
+                  'myHNL_e',
+              ),
+'''
+    elif self.dobs:
+      pdgid = '531' 
+      pdgid_conjugate = '531, -531'
+      list_decay_string = '''
+            list_forced_decays = cms.vstring(       
+                  'myB0s',
+                  'myB0sbar',
+                  'myHNL_mu',
+                  'myHNL_e',
+              ),
+'''
+    else:
+      pdgid = '521, 511, 531' 
+      pdgid_conjugate = '-521, -511, -531'
+      list_decay_string = '''
+            list_forced_decays = cms.vstring(       
+                  'myB+', 
+                  'myB-',
+                  'myB0',
+                  'myB0bar',
+                  'myB0s',
+                  'myB0sbar',
+                  'myHNL_mu',
+                  'myHNL_e',
+              ),
+'''
     for i,p in enumerate(self.points):
       fragname = 'BToHNLEMuX_HNLToEMuPi_SoftQCD_b_mHNL{:.2f}_ctau{:.1f}mm_TuneCP5_13TeV_pythia8-evtgen_cfi.py'.format(p.mass, p.ctau)
       p.fragname = fragname
@@ -455,7 +596,7 @@ configurationMetadata = cms.untracked.PSet(
 BFilter = cms.EDFilter("MCMultiParticleFilter",
    NumRequired = cms.int32(1),
    AcceptMore = cms.bool(True),
-   ParticleID = cms.vint32(521,511,531),
+   ParticleID = cms.vint32({PDGID}),
    PtMin = cms.vdouble(0.,0.,0.),
    EtaMax = cms.vdouble(10.,10.,10.),
    Status = cms.vint32(0,0,0), 
@@ -476,7 +617,7 @@ TriggerMuonFilter = cms.EDFilter("PythiaFilterMultiMother",
     MinEta = cms.untracked.double(-1.55),
     MinPt = cms.untracked.double(6.8), 
     ParticleID = cms.untracked.int32(13),
-    MotherIDs = cms.untracked.vint32(521, 511, 531, 9900015),
+    MotherIDs = cms.untracked.vint32({PDGID}, 9900015),
 )
 
 HNLPionFilter = cms.EDFilter("PythiaFilterMultiMother", 
@@ -499,18 +640,9 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
             convertPythiaCodes = cms.untracked.bool(False),
             decay_table = cms.string('GeneratorInterface/EvtGenInterface/data/DECAY_2014_NOLONGLIFE.DEC'),
             
-            list_forced_decays = cms.vstring(       
-                'myB+', 
-                'myB-',
-                'myB0',
-                'myB0bar',
-                'myB0s',
-                'myB0sbar',
-                'myHNL_mu',
-                'myHNL_e',
-            ),
+            {DECAY_LIST}
             
-            operates_on_particles = cms.vint32(521, -521, 511, -511, 531, -531, 9900015), 
+            operates_on_particles = cms.vint32({PDGID_CONJ}, 9900015), 
             particle_property_file = cms.FileInPath('evt_BHNL_mass{MASS:.2f}_ctau{CTAU:.1f}_maj.pdl'),
             user_decay_embedded = cms.vstring(
               {decay_table}
@@ -544,6 +676,9 @@ ProductionFilterSequence = cms.Sequence(generator+BFilter+DoubleLeptonFilter+Tri
 '''.format(
       MASS = p.mass,
       CTAU = p.ctau,
+      PDGID = pdgid,
+      PDGID_CONJ = pdgid_conjugate,
+      DECAY_LIST = list_decay_string,
       decay_table = self.writeEvtGenDEC(p)
     )
         f.write(tobewritten)
@@ -687,6 +822,9 @@ def getOptions():
   #parser.add_argument('--dogenonly', dest='dogenonly', help='produce sample until gen', action='store_true', default=False)
   #parser.add_argument('--doskipmuonfilter', dest='doskipmuonfilter', help='skip the muon filter', action='store_true', default=False)
   #parser.add_argument('--dodisplfilter', dest='dodisplfilter', help='add a filter on the HNL displacement, Lxyz<1.5m', action='store_true', default=False)
+  parser.add_argument('--dobu', dest='dobu', help='[optional] do the Bu generation', action='store_true', default=False)
+  parser.add_argument('--dobd', dest='dobd', help='[optional] do the Bd generation', action='store_true', default=False)
+  parser.add_argument('--dobs', dest='dobs', help='[optional] do the Bs generation', action='store_true', default=False)
   parser.add_argument('--dobc', dest='dobc', help='do the Bc generation instead of other B species', action='store_true', default=False)
   #parser.add_argument('--docontrol', dest='docontrol', help='do the generation for the control channel B->JpsiK', action='store_true', default=False)
   #parser.add_argument('--domajorana', dest='domajorana', help='consider the HNL as a Majorana particle instead of Dirac', action='store_true', default=False)
