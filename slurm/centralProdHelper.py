@@ -51,6 +51,11 @@ class Job(object):
       print('===> Will override several job configurations for all points:')
       print('       njobs, nevtsjob, time, prodLabel')
       self.prodLabel = '{v}'.format(v=self.ver)
+      if self.dobu: self.prodLabel += '_Bu'
+      if self.dobd: self.prodLabel += '_Bd'
+      if self.dobs: self.prodLabel += '_Bs'
+      if self.domuon: self.prodLabel += '_muon'
+      if self.doelectron: self.prodLabel += '_electron'
 
 
   def makeProdDir(self):
@@ -89,6 +94,7 @@ class Job(object):
   def makeTemplates(self):
     for p in self.points:
       nevtsjob_toset = self.nevtsjob if not self.override else p.cfg.nevtsjob 
+      njobs = self.njobs if not self.override else p.cfg.njobs
       template = [
         '#!/bin/bash',
         '',
@@ -96,6 +102,7 @@ class Job(object):
         '#SBATCH -o logs/prod_mass{m}_ctau{ctau}_%a.log', 
         '#SBATCH -e logs/prod_mass{m}_ctau{ctau}_%a.log',
         '#SBATCH -p standard',
+        #'#SBATCH -p short',
         #'#SBATCH -t {hh}:00:00',
         '#SBATCH --mem {mem}',
         '#SBATCH --array={arr}',
@@ -228,7 +235,7 @@ class Job(object):
           hh=self.time if not self.override else p.cfg.timejob,
           mem=self.mem,
           lbldir=self.prodLabel,
-          arr='1-{}'.format(self.njobs if not self.override else p.cfg.njobs),
+          arr='1-{}'.format(njobs),
           pl=self.prodLabel,
           user=self.user,
           frag=p.fragname,

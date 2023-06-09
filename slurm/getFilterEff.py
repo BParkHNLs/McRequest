@@ -112,6 +112,9 @@ if __name__ == "__main__":
     tot_timeGenEvents[p.name] = sum(timeEvents[p.name])/len(timeEvents[p.name]) if len(timeEvents[p.name]) !=0 else 0
     tot_timeGenEvent[p.name]  = sum(timeEvents[p.name])/len(timeEvents[p.name])/(sum(nGenEvents[p.name])/len(nGenEvents[p.name])) if tot_timeGenEvents[p.name]!=0 else 0
     tot_timeTotEvent[p.name]  = sum(timeEvents[p.name])/len(timeEvents[p.name])/(sum(nTotEvents[p.name])/len(nTotEvents[p.name])) if tot_timeGenEvents[p.name]!=0 else 0
+    if tot_timeGenEvent[p.name] == 0:
+      print 'no point found'
+      continue
     tot_scores[p.name]        = 8*3600./(tot_timeGenEvent[p.name])
 
 
