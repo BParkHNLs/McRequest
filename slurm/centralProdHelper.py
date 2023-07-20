@@ -528,9 +528,14 @@ class Job(object):
         decay_table = '''
                    'Alias myB+ B+',
                    'Alias myB- B-',
+                   'Alias myHNL_mu hnl',
                    'Alias myHNL_e hnl',
                    'ChargeConj myB+ myB-',
                    {add_B_decay}
+                   'Decay myHNL_mu',
+                   '0.5     mu-    pi+    PHSP;',
+                   '0.5     mu+    pi-    PHSP;',
+                   'Enddecay',
                    'Decay myHNL_e',
                    '0.5     e-    pi+    PHSP;',
                    '0.5     e+    pi-    PHSP;',
@@ -585,9 +590,14 @@ class Job(object):
         decay_table = '''
                    'Alias myB0 B0',
                    'Alias myB0bar anti-B0',
+                   'Alias myHNL_mu hnl',
                    'Alias myHNL_e hnl',
                    'ChargeConj myB0 myB0bar',
                    {add_B0_decay}
+                   'Decay myHNL_mu',
+                   '0.5     mu-    pi+    PHSP;',
+                   '0.5     mu+    pi-    PHSP;',
+                   'Enddecay',
                    'Decay myHNL_e',
                    '0.5     e-    pi+    PHSP;',
                    '0.5     e+    pi-    PHSP;',
@@ -642,9 +652,14 @@ class Job(object):
         decay_table = '''
                    'Alias myB0s B_s0',
                    'Alias myB0sbar anti-B_s0',
+                   'Alias myHNL_mu hnl',
                    'Alias myHNL_e hnl',
                    'ChargeConj myB0s myB0sbar', 
                    {add_B0s_decay}
+                   'Decay myHNL_mu',
+                   '0.5     mu-    pi+    PHSP;',
+                   '0.5     mu+    pi-    PHSP;',
+                   'Enddecay',
                    'Decay myHNL_e',
                    '0.5     e-    pi+    PHSP;',
                    '0.5     e+    pi-    PHSP;',
@@ -713,6 +728,7 @@ class Job(object):
                    'Alias myB0bar anti-B0',
                    'Alias myB0s B_s0',
                    'Alias myB0sbar anti-B_s0',
+                   'Alias myHNL_mu hnl',
                    'Alias myHNL_e hnl',
                    'ChargeConj myB+ myB-',
                    'ChargeConj myB0 myB0bar',
@@ -720,6 +736,10 @@ class Job(object):
                    {add_B_decay}
                    {add_B0_decay}
                    {add_B0s_decay}
+                   'Decay myHNL_mu',
+                   '0.5     mu-    pi+    PHSP;',
+                   '0.5     mu+    pi-    PHSP;',
+                   'Enddecay',
                    'Decay myHNL_e',
                    '0.5     e-    pi+    PHSP;',
                    '0.5     e+    pi-    PHSP;',
@@ -817,6 +837,7 @@ class Job(object):
               list_forced_decays = cms.vstring(       
                     'myB+', 
                     'myB-',
+                    'myHNL_mu',
                     'myHNL_e',
                 ),
   '''
@@ -845,6 +866,7 @@ class Job(object):
               list_forced_decays = cms.vstring(       
                     'myB0',
                     'myB0bar',
+                    'myHNL_mu',
                     'myHNL_e',
                 ),
   '''
@@ -873,6 +895,7 @@ class Job(object):
               list_forced_decays = cms.vstring(       
                     'myB0s',
                     'myB0sbar',
+                    'myHNL_mu',
                     'myHNL_e',
                 ),
   '''
@@ -909,6 +932,7 @@ class Job(object):
                     'myB0bar',
                     'myB0s',
                     'myB0sbar',
+                    'myHNL_mu',
                     'myHNL_e',
                 ),
   '''
@@ -928,6 +952,8 @@ class Job(object):
 
     if self.domuon:
       lepton_pdgid = '-13, 13'
+    elif self.doelectron:
+      lepton_pdgid = '-11, 11'
     else:
       lepton_pdgid = '-11, 11, -13, 13'
 
