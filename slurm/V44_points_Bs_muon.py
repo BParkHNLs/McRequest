@@ -103,6 +103,9 @@ m_ctau_eff_time_s = [
 (4.40,     0.10, 2.60e-03, 28.50),
 (4.60,     0.10, 1.41e-03, 53.66),
 (4.70,     0.10, 8.66e-04, 90.47),
+(4.80,     0.10, 0.0, 90.47), # cross section very small, signal will not contribute
+(4.90,     0.10, 0.0, 90.47), # cross section very small, signal will not contribute
+(5.00,     0.10, 0.0, 90.47), # cross section very small, signal will not contribute
 (3.05,    10.00, 1.86e-03, 39.65),
 (3.10,    10.00, 2.08e-03, 36.56),
 (3.15,    10.00, 2.28e-03, 32.42),
